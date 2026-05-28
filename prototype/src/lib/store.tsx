@@ -70,6 +70,21 @@ const RETURNING_EMAIL_USER: User = {
   profileComplete: true,
 };
 
+// デモ用の初期ログインユーザー（保存ユーザーが無いときに自動ログイン）。
+// Web を開いた瞬間からフル機能を見せるための既定アカウント。
+const DEMO_USER: User = {
+  name: "Akihiro T.",
+  handle: "@akihiro",
+  email: "akihiro@example.com",
+  level: "中級",
+  dupr: "3.6",
+  area: "都内・PBTコート周辺",
+  availability: ["平日夜", "土日午前"],
+  badges: ["認定"],
+  provider: "google",
+  profileComplete: true,
+};
+
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [authReady, setAuthReady] = useState(false);
@@ -82,11 +97,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     try {
       const raw = localStorage.getItem(AUTH_KEY);
-      if (raw) setUser(JSON.parse(raw) as User);
+      // 保存ユーザーがあればそれを優先。無ければデモユーザーで自動ログイン
+      // （＝デフォルトでログイン済み。ログアウトしてもリロードで再ログイン）
+      setUser(raw ? (JSON.parse(raw) as User) : DEMO_USER);
       const readRaw = localStorage.getItem(NEWS_READ_KEY);
       if (readRaw) setReadNewsIds(JSON.parse(readRaw) as string[]);
     } catch {
-      /* ignore */
+      setUser(DEMO_USER);
     }
     setAuthReady(true);
   }, []);
