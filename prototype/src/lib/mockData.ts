@@ -1,0 +1,216 @@
+import type { Post, Thread, Announcement } from "./types";
+
+// 運営からのお知らせ（管理画面で「公開」されたものを表示する想定のダミー）
+export const seedAnnouncements: Announcement[] = [
+  {
+    id: "a1",
+    title: "5/29(金) 設備メンテナンスのお知らせ",
+    body: "深夜2:00〜4:00の間、一時的に投稿・DMがご利用いただけません。ご不便をおかけしますがよろしくお願いします。",
+    publishedAt: "2026-05-26",
+    important: true,
+  },
+  {
+    id: "a2",
+    title: "初心者デー開催中🎾",
+    body: "平日昼は初心者歓迎の時間帯です。レンタルパドルあり・手ぶらOK。お気軽にご参加ください。",
+    publishedAt: "2026-05-20",
+  },
+  {
+    id: "a3",
+    title: "GWイベント「PBT交流会」ありがとうございました🙌",
+    body: "たくさんのご参加ありがとうございました。次回は6月開催予定です。詳細は追ってお知らせします。",
+    publishedAt: "2026-05-08",
+  },
+];
+
+export const seedPosts: Post[] = [
+  {
+    id: "p-official-1",
+    author: "PBT運営",
+    timeAgo: "1時間前",
+    body: "【運営】平日昼の空きが狙い目です🎾 初心者デー開催中、パドルレンタル無料。お一人でもお気軽にどうぞ！コート予約はプロフィールのリンクから。",
+    official: true,
+    featured: true,
+    duration: "7日",
+  },
+  {
+    id: "p1",
+    author: "西村さん",
+    timeAgo: "2時間前",
+    level: "中級 · DUPR 3.45",
+    body: "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK、パドルレンタルあります🥒\nゲーム形式でゆるく回しましょう。初級さんも歓迎です。",
+    authorBadges: ["認定"],
+    featured: true,
+    duration: "3時間",
+  },
+  {
+    id: "p2",
+    author: "TAKA",
+    timeAgo: "4時間前",
+    level: "上級 · DUPR 4.1",
+    body: "明日 21:30〜 上級ラリーしたい人募集。DUPR 4.0+ でがっつり2時間、コート代割り勘でお願いします🔥",
+    authorBadges: ["契約選手"],
+    duration: "1日",
+  },
+  {
+    id: "p3",
+    author: "さくら",
+    timeAgo: "5時間前",
+    level: "初級",
+    body: "今週末の朝活メンバー募集中☀️ 初心者歓迎、ゆるく楽しくやりましょう。時間は相談で！",
+    authorBadges: ["スタッフ"],
+    featured: true,
+    duration: "3日",
+  },
+  {
+    id: "p4",
+    author: "Kenji",
+    timeAgo: "6時間前",
+    level: "中級 · DUPR 3.6",
+    body: "土曜の午前、ダブルス練習しませんか？9:00〜11:00 PBTコート1。3名募集、初中級歓迎です🎾",
+  },
+  {
+    id: "p5",
+    author: "Mai",
+    timeAgo: "7時間前",
+    level: "中級",
+    body: "金曜夜にゲームしたい人〜！20:00〜2時間、レベル不問でわいわいやりましょう😊 終わったら近くで軽く打ち上げも🍻",
+  },
+  {
+    id: "p7",
+    author: "ゆうこ",
+    timeAgo: "昨日",
+    level: "初級 · 初めて3ヶ月",
+    body: "ピックル始めたばかりです🔰 ルールはなんとなく分かる程度。優しく一緒に打ってくれる方いませんか？平日のお昼希望です🙏",
+  },
+  {
+    id: "p8",
+    author: "Ren",
+    timeAgo: "昨日",
+    level: "中級 · DUPR 3.5",
+    body: "日曜 15:00〜17:00 コート3で4人ゲーム。あと2名募集！パドルレンタルあるので手ぶらでどうぞ。",
+  },
+  {
+    id: "p9",
+    author: "あさみ",
+    timeAgo: "2日前",
+    level: "中級",
+    body: "女子だけでまったりラリーしませんか？🌙 水曜の夜20時〜、PBTにて。ブランクある人も大歓迎です！",
+  },
+  {
+    id: "p10",
+    author: "Sho",
+    timeAgo: "3日前",
+    level: "上級 · DUPR 4.3",
+    body: "大会前の調整パートナー募集。本気で打ち合える方、平日夜にどこかで。スコア付きゲーム回したいです。",
+  },
+];
+
+/** 運営サポート窓口スレッドのID（問い合わせの入口） */
+export const SUPPORT_THREAD_ID = "t-support";
+
+export const seedThreads: Thread[] = [
+  {
+    id: SUPPORT_THREAD_ID,
+    name: "PBT運営",
+    meta: "公式サポート",
+    official: true,
+    preview: "ご不明点はこちらへ。お気軽にどうぞ🥒",
+    time: "常時受付",
+    messages: [
+      {
+        id: "tsup1",
+        fromSelf: false,
+        text: "PBT Match サポートです🥒\n予約・料金・設備・アカウント・不具合など、お困りごとがあればこちらへお送りください。担当者が確認のうえ、このトークでご返信します。",
+        time: "—",
+      },
+    ],
+  },
+  {
+    id: "t1",
+    name: "西村さん",
+    meta: "中級 · DUPR 3.45",
+    preview: "大丈夫ですよ、コートは18:55から取ってます！",
+    time: "18:44",
+    unread: 2,
+    messages: [
+      { id: "t1m1", fromSelf: false, text: "DMありがとうございます！\n中級でしたら大歓迎です🥒", time: "17:32" },
+      { id: "t1m2", fromSelf: true, text: "よろしくお願いします！参加したいです", time: "17:35" },
+      { id: "t1m3", fromSelf: false, text: "了解です🙏\n当日よろしくお願いします！", time: "17:50" },
+      { id: "t1m4", fromSelf: true, text: "10分ほど遅刻するかもです、すみません🙏", time: "18:42" },
+      { id: "t1m5", fromSelf: false, text: "大丈夫ですよ、コートは18:55から取ってます！", time: "18:44" },
+    ],
+  },
+  {
+    id: "t2",
+    name: "TAKA",
+    meta: "上級 · DUPR 4.1",
+    preview: "お待ちしてます🔥",
+    time: "14:20",
+    messages: [
+      { id: "t2m1", fromSelf: false, text: "明日21:30〜、空いてますか？", time: "14:18" },
+      { id: "t2m2", fromSelf: true, text: "参加したいです！", time: "14:19" },
+      { id: "t2m3", fromSelf: false, text: "お待ちしてます🔥", time: "14:20" },
+    ],
+  },
+  {
+    id: "t3",
+    name: "さくら",
+    meta: "初級",
+    preview: "パドルレンタルあるんですね、嬉しい！",
+    time: "11:02",
+    unread: 1,
+    messages: [
+      { id: "t3m1", fromSelf: true, text: "朝活、参加してみたいです！初級でも大丈夫ですか？", time: "10:58" },
+      { id: "t3m2", fromSelf: false, text: "もちろんです！パドルレンタルもありますよ🎾", time: "11:00" },
+      { id: "t3m3", fromSelf: false, text: "パドルレンタルあるんですね、嬉しい！", time: "11:02" },
+    ],
+  },
+  {
+    id: "t4",
+    name: "Kenji",
+    meta: "中級 · DUPR 3.6",
+    preview: "土曜9時、コート1で待ってます！",
+    time: "昨日",
+    unread: 1,
+    messages: [
+      { id: "t4m1", fromSelf: true, text: "土曜の練習、参加できますか？", time: "昨日" },
+      { id: "t4m2", fromSelf: false, text: "ぜひ！3名募集なのであと2枠あります", time: "昨日" },
+      { id: "t4m3", fromSelf: false, text: "土曜9時、コート1で待ってます！", time: "昨日" },
+    ],
+  },
+  {
+    id: "t5",
+    name: "Mai",
+    meta: "中級",
+    preview: "打ち上げも楽しみにしてます🍻",
+    time: "昨日",
+    messages: [
+      { id: "t5m1", fromSelf: false, text: "金曜夜のゲーム、来られそうですか？", time: "昨日" },
+      { id: "t5m2", fromSelf: true, text: "行けます！レベル不問とのことで安心しました😊", time: "昨日" },
+      { id: "t5m3", fromSelf: false, text: "打ち上げも楽しみにしてます🍻", time: "昨日" },
+    ],
+  },
+  {
+    id: "t6",
+    name: "Riku",
+    meta: "中級",
+    preview: "楽しかったです！またお願いします🙏",
+    time: "5/22",
+    messages: [
+      { id: "t6m1", fromSelf: true, text: "今日はありがとうございました！", time: "5/22" },
+      { id: "t6m2", fromSelf: false, text: "楽しかったです！またお願いします🙏", time: "5/22" },
+    ],
+  },
+  {
+    id: "t7",
+    name: "Daiki",
+    meta: "上級 · DUPR 3.9",
+    preview: "サーブの動画、参考にしてみてください",
+    time: "5/20",
+    messages: [
+      { id: "t7m1", fromSelf: true, text: "朝練の件、よろしくお願いします！", time: "5/20" },
+      { id: "t7m2", fromSelf: false, text: "了解です。サーブの動画、参考にしてみてください", time: "5/20" },
+    ],
+  },
+];

@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+/* PBT world tokens (shared with the app) */
+@theme {
+  --color-bg: #0a0a1a;
+  --color-bg-deep: #06060f;
+  --color-surface: #14141f;
+  --color-surface-2: #1c1c2b;
+  --color-ink: #ececec;
+  --color-ink-2: #bfbfc8;
+  --color-muted: #8a8a8a;
+  --color-faint: #54545f;
+  --color-court: #171728;
+  --color-court-2: #24243c;
+  --color-accent: #f6ff54;
+  --color-accent-deep: #d4de2e;
+  --color-on-accent: #0a0a1a;
+  --color-ember: #ff6a3d;
+  --color-ok: #4ade80;
+  --color-warn: #fbbf24;
+
+  --font-display: var(--font-orbitron), "Inter", sans-serif;
+  --font-sans: var(--font-inter), "Noto Sans JP", system-ui, sans-serif;
+  --font-ja: var(--font-noto-jp), "Inter", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: var(--color-bg-deep);
+}
+
+body {
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}

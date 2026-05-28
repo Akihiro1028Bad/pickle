@@ -1,0 +1,2749 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pickle [仮] — UI Mockup v0.3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,700;0,9..144,900;1,9..144,400;1,9..144,700&family=Manrope:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #F2EDE2;
+    --bg-deep: #ECE4D2;
+    --surface: #FFFFFF;
+    --ink: #131311;
+    --ink-2: #3A3833;
+    --ink-muted: #76726A;
+    --ink-faint: #A8A498;
+    --court: #1B3A2F;
+    --court-2: #2A5644;
+    --lime: #D9F25C;
+    --lime-deep: #B6CE39;
+    --ember: #E85A2C;
+    --border: rgba(19, 19, 17, 0.08);
+    --border-2: rgba(19, 19, 17, 0.14);
+    --shadow-sm: 0 1px 2px rgba(19, 19, 17, 0.04);
+    --shadow-md: 0 4px 24px rgba(19, 19, 17, 0.06);
+    --shadow-lg: 0 40px 80px -20px rgba(19, 19, 17, 0.18), 0 12px 32px -8px rgba(19, 19, 17, 0.08);
+    --font-display: 'Fraunces', 'Zen Kaku Gothic New', serif;
+    --font-sans: 'Manrope', 'Zen Kaku Gothic New', system-ui, sans-serif;
+    --font-ja: 'Zen Kaku Gothic New', 'Manrope', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+  }
+
+  body {
+    background-image:
+      radial-gradient(ellipse 1200px 600px at 20% -10%, rgba(217, 242, 92, 0.18), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 100% 30%, rgba(27, 58, 47, 0.06), transparent 60%);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    z-index: 100;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.05 0 0 0 0 0.05 0 0 0 0 0.04 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 72px) clamp(20px, 4vw, 56px) 80px;
+  }
+
+  /* ===== HERO ===== */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: end;
+    gap: 32px;
+    padding-bottom: 56px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--court);
+    margin-bottom: 24px;
+  }
+
+  .eyebrow::before {
+    content: '';
+    width: 24px;
+    height: 1px;
+    background: var(--court);
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.025em;
+    color: var(--ink);
+  }
+
+  .hero h1 em {
+    font-style: italic;
+    color: var(--court);
+    font-weight: 300;
+    font-size: 0.55em;
+    margin-left: 6px;
+    vertical-align: 0.32em;
+  }
+
+  .hero .lede {
+    font-family: var(--font-ja);
+    font-size: 17px;
+    color: var(--ink-2);
+    max-width: 600px;
+    margin-top: 24px;
+    line-height: 1.7;
+  }
+
+  .hero .lede strong { color: var(--court); font-weight: 700; }
+
+  .hero-meta {
+    text-align: right;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.04em;
+    line-height: 1.8;
+  }
+
+  .hero-meta strong {
+    display: block;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+
+  .changelog {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 12px;
+    background: var(--ink);
+    color: var(--lime);
+    border-radius: 6px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  /* ===== SECTION HEADERS ===== */
+  .section-divider {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin: 48px 0 24px;
+  }
+
+  .section-divider .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 32px;
+    color: var(--lime-deep);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .section-divider .title {
+    font-family: var(--font-ja);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .section-divider .rule {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ===== PHONES GRID ===== */
+  .phones {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(20px, 2.5vw, 40px);
+  }
+
+  @media (max-width: 1400px) { .phones { grid-template-columns: repeat(3, 1fr); } }
+  @media (max-width: 1000px) { .phones { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 640px)  { .phones { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
+
+  @media (max-width: 800px) { .hero { grid-template-columns: 1fr; } .hero-meta { text-align: left; } }
+
+  .phone-card {
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    animation: rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  .phone-card:nth-child(1) { animation-delay: 0.05s; }
+  .phone-card:nth-child(2) { animation-delay: 0.12s; }
+  .phone-card:nth-child(3) { animation-delay: 0.19s; }
+  .phone-card:nth-child(4) { animation-delay: 0.26s; }
+  .phone-card:nth-child(5) { animation-delay: 0.33s; }
+  .phone-card:nth-child(6) { animation-delay: 0.40s; }
+  .phone-card:nth-child(7) { animation-delay: 0.47s; }
+  .phone-card:nth-child(8) { animation-delay: 0.54s; }
+
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .phone-label {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px dashed var(--border-2);
+  }
+
+  .phone-label .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 28px;
+    color: var(--court);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .phone-label .name {
+    font-family: var(--font-ja);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    letter-spacing: 0.02em;
+    text-align: right;
+  }
+
+  .phone-label .badge {
+    display: inline-block;
+    background: var(--ember);
+    color: white;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 4px;
+    margin-left: 4px;
+    vertical-align: middle;
+    letter-spacing: 0.05em;
+  }
+
+  /* Phone frame */
+  .phone {
+    width: 100%;
+    max-width: 360px;
+    margin: 0 auto;
+    aspect-ratio: 360 / 760;
+    background: var(--surface);
+    border-radius: 40px;
+    border: 1px solid var(--border-2);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+    padding: 12px;
+  }
+
+  .phone-screen {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-deep);
+    border-radius: 28px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    font-size: 13px;
+  }
+
+  .status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px 4px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    flex-shrink: 0;
+  }
+
+  .status-bar .icons {
+    display: flex;
+    gap: 4px;
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+
+  /* App header */
+  .app-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px 12px;
+    flex-shrink: 0;
+  }
+
+  .app-logo {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .app-logo::after { content: '·'; color: var(--lime-deep); margin-left: 2px; }
+
+  .icon-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    color: var(--ink-2);
+    position: relative;
+  }
+
+  .icon-btn .dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 7px;
+    height: 7px;
+    background: var(--ember);
+    border-radius: 50%;
+    border: 2px solid var(--surface);
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 4px;
+    padding: 0 20px 12px;
+    flex-shrink: 0;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 10px 8px;
+    text-align: center;
+    font-family: var(--font-ja);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    border-bottom: 2px solid transparent;
+  }
+
+  .tab.active {
+    color: var(--ink);
+    border-bottom-color: var(--court);
+  }
+
+  .tab .count {
+    display: inline-block;
+    margin-left: 4px;
+    background: var(--lime);
+    color: var(--court);
+    border-radius: 9px;
+    padding: 1px 6px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+
+  .tab:not(.active) .count { background: rgba(0,0,0,0.06); color: var(--ink-muted); }
+
+  .filters {
+    display: flex;
+    gap: 6px;
+    padding: 8px 20px 14px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+
+  .filters::-webkit-scrollbar { display: none; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-2);
+    white-space: nowrap;
+    font-family: var(--font-ja);
+  }
+
+  .chip.solid { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+
+  /* Post cards */
+  .feed {
+    flex: 1;
+    overflow-y: auto;
+    padding: 4px 20px 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    scrollbar-width: none;
+  }
+  .feed::-webkit-scrollbar { display: none; }
+
+  .post {
+    background: var(--surface);
+    border-radius: 18px;
+    padding: 16px 14px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    position: relative;
+  }
+
+  .post.urgent {
+    border-color: rgba(232, 90, 44, 0.2);
+    background: linear-gradient(180deg, #FFFBF8 0%, #FFFFFF 100%);
+  }
+
+  .post-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .post-time {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .post-time .day {
+    display: block;
+    font-family: var(--font-ja);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    margin-bottom: 4px;
+    letter-spacing: 0.06em;
+  }
+
+  .post-time .end { font-size: 13px; color: var(--ink-muted); font-weight: 400; }
+
+  .post-need { text-align: right; }
+
+  .post-need .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 28px;
+    color: var(--ember);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+
+  .post-need .label {
+    font-family: var(--font-ja);
+    font-size: 9px;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    margin-top: 2px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .post-host {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 10px;
+    font-family: var(--font-ja);
+  }
+
+  .avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: white;
+    font-weight: 700;
+    font-size: 11px;
+    flex-shrink: 0;
+    font-family: var(--font-sans);
+  }
+
+  .avatar.lg { width: 48px; height: 48px; font-size: 18px; }
+  .avatar.xl { width: 64px; height: 64px; font-size: 22px; }
+  .avatar.a1 { background: linear-gradient(135deg, #1B3A2F, #2A5644); }
+  .avatar.a2 { background: linear-gradient(135deg, #E85A2C, #C13E15); }
+  .avatar.a3 { background: linear-gradient(135deg, #B6CE39, #8AAB1F); color: var(--court); }
+  .avatar.a4 { background: linear-gradient(135deg, #4A5859, #2E3839); }
+  .avatar.a5 { background: linear-gradient(135deg, #8E5BB5, #5E2B85); }
+  .avatar.empty { background: var(--bg); color: var(--ink-faint); border: 1px dashed var(--border-2); }
+
+  .host-name { font-size: 12px; font-weight: 700; color: var(--ink); }
+  .host-meta { font-size: 10px; color: var(--ink-muted); margin-left: auto; font-weight: 500; }
+
+  .post-comment {
+    font-family: var(--font-ja);
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    margin-bottom: 12px;
+  }
+
+  .post-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .mini-chip {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    background: var(--bg);
+    color: var(--ink-2);
+    font-weight: 600;
+    font-family: var(--font-ja);
+    letter-spacing: 0.02em;
+  }
+
+  .mini-chip.lime { background: var(--lime); color: var(--court); }
+  .mini-chip.green { background: var(--court); color: white; }
+  .mini-chip.warn { background: #FFE8DD; color: var(--ember); }
+
+  /* FAB */
+  .fab {
+    position: absolute;
+    bottom: 78px;
+    right: 20px;
+    background: var(--ink);
+    color: white;
+    height: 46px;
+    padding: 0 18px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-ja);
+    font-weight: 700;
+    font-size: 12px;
+    box-shadow: 0 12px 24px rgba(19, 19, 17, 0.22);
+  }
+
+  .fab .plus {
+    width: 18px;
+    height: 18px;
+    background: var(--lime);
+    border-radius: 50%;
+    color: var(--ink);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1;
+  }
+
+  /* Bottom nav (4-tab) */
+  .bottom-nav {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 64px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    padding-top: 8px;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--font-ja);
+    font-size: 9px;
+    color: var(--ink-faint);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    position: relative;
+  }
+
+  .nav-item.active { color: var(--ink); }
+
+  .nav-item .icon {
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    position: relative;
+  }
+
+  .nav-item .badge {
+    position: absolute;
+    top: -3px;
+    right: -7px;
+    background: var(--ember);
+    color: white;
+    font-size: 8px;
+    font-weight: 800;
+    padding: 1px 4px;
+    border-radius: 6px;
+    line-height: 1.3;
+  }
+
+  .nav-item.active .icon::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--court);
+    border-radius: 50%;
+  }
+
+  /* Form / Create */
+  .create-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px 16px;
+    flex-shrink: 0;
+  }
+
+  .back-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    color: var(--ink);
+  }
+
+  .create-title {
+    font-family: var(--font-ja);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .create-helper {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--court);
+    font-weight: 400;
+  }
+
+  .form-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 24px;
+    scrollbar-width: none;
+  }
+  .form-body::-webkit-scrollbar { display: none; }
+
+  .field { margin-bottom: 20px; }
+
+  .field-label {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .field-label::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--ink-muted);
+  }
+
+  .pill-group { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .pill {
+    padding: 8px 13px;
+    border-radius: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    font-family: var(--font-ja);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink-2);
+  }
+
+  .pill.active { background: var(--ink); color: white; border-color: var(--ink); }
+  .pill.lime { background: var(--lime); color: var(--court); border-color: var(--lime-deep); }
+
+  .time-row {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .time-input {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 10px;
+    text-align: center;
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .time-sep { color: var(--ink-faint); font-size: 18px; }
+
+  .facility-card {
+    background: linear-gradient(135deg, var(--court) 0%, var(--court-2) 100%);
+    border-radius: 14px;
+    padding: 14px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .facility-card::after {
+    content: '';
+    position: absolute;
+    right: -20px;
+    top: -20px;
+    width: 80px;
+    height: 80px;
+    background: var(--lime);
+    border-radius: 50%;
+    opacity: 0.15;
+  }
+
+  .facility-mark {
+    width: 38px;
+    height: 38px;
+    background: var(--lime);
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    color: var(--court);
+    font-family: var(--font-display);
+    font-weight: 900;
+    font-size: 18px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .facility-info { flex: 1; min-width: 0; position: relative; z-index: 1; }
+
+  .facility-name { font-family: var(--font-ja); font-size: 13px; font-weight: 700; margin-bottom: 2px; }
+  .facility-addr { font-family: var(--font-ja); font-size: 10px; opacity: 0.7; }
+
+  .stepper {
+    display: inline-flex;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .step-btn {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    font-size: 16px;
+    color: var(--ink);
+    background: none;
+    border: none;
+  }
+
+  .step-num {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 20px;
+    width: 44px;
+    text-align: center;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .step-hint { font-family: var(--font-ja); font-size: 11px; color: var(--ink-muted); margin-left: 10px; }
+
+  .textarea {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 14px;
+    font-family: var(--font-ja);
+    font-size: 13px;
+    color: var(--ink);
+    min-height: 60px;
+    line-height: 1.6;
+  }
+
+  .char-count {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--ink-faint);
+    text-align: right;
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .submit-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 14px 20px 18px;
+    background: linear-gradient(180deg, transparent, var(--bg-deep) 30%);
+  }
+
+  .submit-btn {
+    width: 100%;
+    background: var(--court);
+    color: white;
+    height: 50px;
+    border-radius: 14px;
+    border: none;
+    font-family: var(--font-ja);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 8px 20px rgba(27, 58, 47, 0.24);
+  }
+
+  .submit-btn .arr {
+    width: 22px;
+    height: 22px;
+    background: var(--lime);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--court);
+    font-size: 13px;
+  }
+
+  .submit-btn.secondary {
+    background: var(--surface);
+    color: var(--ink);
+    border: 1px solid var(--border-2);
+    box-shadow: none;
+    margin-top: 8px;
+    height: 44px;
+  }
+
+  /* Profile cover */
+  .profile-cover {
+    background: linear-gradient(135deg, var(--court) 0%, var(--court-2) 100%);
+    padding: 20px 20px 56px;
+    color: white;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-cover::before {
+    content: '';
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 160px;
+    height: 160px;
+    border: 1px solid rgba(217, 242, 92, 0.2);
+    border-radius: 50%;
+  }
+
+  .profile-cover::after {
+    content: '';
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 80px;
+    height: 80px;
+    background: var(--lime);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+
+  .cover-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    opacity: 0.7;
+  }
+
+  .gear {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.1);
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+  }
+
+  .big-avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--lime);
+    color: var(--court);
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: italic;
+    font-size: 32px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+  }
+
+  .display-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .handle {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 12px;
+    opacity: 0.6;
+    margin-bottom: 12px;
+  }
+
+  .home-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255,255,255,0.12);
+    backdrop-filter: blur(8px);
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-family: var(--font-ja);
+    font-size: 10px;
+    font-weight: 600;
+  }
+
+  .home-badge::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: var(--lime);
+    border-radius: 50%;
+  }
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--surface);
+    margin: -36px 20px 0;
+    border-radius: 14px;
+    padding: 14px 8px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-md);
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .stat { text-align: center; border-right: 1px solid var(--border); }
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-num em { font-style: italic; font-weight: 400; color: var(--court); }
+
+  .stat-label {
+    font-family: var(--font-ja);
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .profile-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 18px 20px 80px;
+    scrollbar-width: none;
+  }
+  .profile-body::-webkit-scrollbar { display: none; }
+
+  .section-title {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
+  }
+
+  .section-title::before {
+    content: '';
+    width: 14px;
+    height: 1px;
+    background: var(--ink-muted);
+  }
+
+  .level-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .level-badge {
+    width: 44px;
+    height: 44px;
+    background: linear-gradient(135deg, var(--lime), var(--lime-deep));
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-style: italic;
+    color: var(--court);
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+
+  .level-info { flex: 1; }
+  .level-name { font-family: var(--font-ja); font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+  .level-dupr { font-family: var(--font-display); font-style: italic; font-size: 11px; color: var(--ink-muted); }
+  .level-dupr strong { font-style: normal; color: var(--court); font-weight: 700; }
+
+  .history-list { display: flex; flex-direction: column; gap: 6px; }
+
+  .history-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .history-date {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    text-align: center;
+    flex-shrink: 0;
+    min-width: 32px;
+  }
+
+  .history-date small {
+    display: block;
+    font-family: var(--font-ja);
+    font-size: 8px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+  }
+
+  .history-divider { width: 1px; height: 24px; background: var(--border); }
+  .history-info { flex: 1; min-width: 0; }
+  .history-title {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .history-meta { font-family: var(--font-ja); font-size: 9px; color: var(--ink-muted); }
+
+  /* ===== POST DETAIL (Screen 02) ===== */
+  .detail-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 20px 130px;
+    scrollbar-width: none;
+  }
+  .detail-body::-webkit-scrollbar { display: none; }
+
+  .detail-hero {
+    margin-bottom: 18px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .detail-day {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--ember);
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .detail-time {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 34px;
+    color: var(--ink);
+    letter-spacing: -0.025em;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+
+  .detail-time .end { font-size: 18px; color: var(--ink-muted); }
+
+  .detail-host-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .detail-host-info { flex: 1; }
+  .detail-host-name { font-family: var(--font-ja); font-size: 13px; font-weight: 700; color: var(--ink); }
+  .detail-host-meta { font-family: var(--font-ja); font-size: 11px; color: var(--ink-muted); margin-top: 2px; }
+
+  .info-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-family: var(--font-ja);
+    font-size: 12px;
+  }
+
+  .info-row .label { color: var(--ink-muted); font-weight: 600; }
+  .info-row .value { color: var(--ink); font-weight: 700; }
+  .info-row .value em {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--ember);
+    font-weight: 700;
+    font-size: 16px;
+    margin-right: 2px;
+  }
+
+  .detail-comment {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    margin: 16px 0;
+    font-family: var(--font-ja);
+    font-size: 13px;
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  .joined-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+  }
+
+  .action-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .action-primary {
+    background: var(--court);
+    color: white;
+    height: 48px;
+    border-radius: 14px;
+    border: none;
+    font-family: var(--font-ja);
+    font-weight: 700;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 6px 16px rgba(27, 58, 47, 0.22);
+  }
+
+  .action-primary .icon {
+    width: 20px;
+    height: 20px;
+    background: var(--lime);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    color: var(--court);
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .action-secondary {
+    background: var(--surface);
+    border: 1px solid var(--border-2);
+    color: var(--ink);
+    height: 42px;
+    border-radius: 12px;
+    font-family: var(--font-ja);
+    font-weight: 700;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+
+  /* ===== MANAGE (Screen 04) ===== */
+  .manage-hero {
+    background: var(--surface);
+    margin: 0 16px 14px;
+    border-radius: 14px;
+    padding: 14px;
+    border: 1px solid var(--border);
+  }
+
+  .manage-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+    margin-bottom: 2px;
+  }
+
+  .manage-sub {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-bottom: 12px;
+  }
+
+  .status-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--lime-deep);
+    box-shadow: 0 0 0 4px rgba(182, 206, 57, 0.2);
+  }
+
+  .status-text {
+    font-family: var(--font-ja);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--court);
+  }
+
+  .progress {
+    height: 6px;
+    background: var(--bg);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 75%;
+    background: linear-gradient(90deg, var(--court), var(--lime-deep));
+    border-radius: 3px;
+  }
+
+  .progress-meta {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-ja);
+    font-size: 10px;
+    color: var(--ink-muted);
+    font-weight: 600;
+  }
+
+  .applicant-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    scrollbar-width: none;
+  }
+  .applicant-list::-webkit-scrollbar { display: none; }
+
+  .applicant {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .applicant.approved {
+    background: linear-gradient(180deg, #F5FCE3 0%, #FFFFFF 100%);
+    border-color: var(--lime-deep);
+  }
+
+  .applicant-info { flex: 1; min-width: 0; }
+
+  .applicant-name {
+    font-family: var(--font-ja);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .applicant-name .tag {
+    background: var(--lime);
+    color: var(--court);
+    font-size: 9px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .applicant-msg {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--ink-muted);
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .applicant-actions { display: flex; gap: 6px; }
+
+  .icon-action {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    display: grid;
+    place-items: center;
+    font-size: 14px;
+    color: var(--ink-2);
+  }
+
+  .icon-action.accept { background: var(--lime); color: var(--court); border-color: var(--lime-deep); }
+  .icon-action.reject { color: var(--ember); }
+
+  /* ===== COURT RESERVATION (Screen 05) ===== */
+  .court-date-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 4px 16px 14px;
+    overflow-x: auto;
+    flex-shrink: 0;
+    scrollbar-width: none;
+  }
+  .court-date-tabs::-webkit-scrollbar { display: none; }
+
+  .date-pill {
+    padding: 8px 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-align: center;
+    font-family: var(--font-ja);
+    flex-shrink: 0;
+    min-width: 50px;
+  }
+
+  .date-pill.active {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  .date-pill .num {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 1;
+    color: inherit;
+  }
+
+  .date-pill .dow {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    margin-top: 3px;
+    letter-spacing: 0.06em;
+  }
+
+  .date-pill.active .dow { color: rgba(255,255,255,0.7); }
+
+  .court-grid-wrap {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 140px;
+    scrollbar-width: none;
+  }
+  .court-grid-wrap::-webkit-scrollbar { display: none; }
+
+  .court-header {
+    display: grid;
+    grid-template-columns: 40px repeat(3, 1fr);
+    gap: 6px;
+    padding: 8px 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg-deep);
+    z-index: 1;
+  }
+
+  .court-header-cell {
+    font-family: var(--font-ja);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--ink-muted);
+    text-align: center;
+    padding: 6px 0;
+  }
+
+  .court-header-cell.court {
+    background: var(--court);
+    color: white;
+    border-radius: 6px;
+  }
+
+  .court-row {
+    display: grid;
+    grid-template-columns: 40px repeat(3, 1fr);
+    gap: 6px;
+    margin-bottom: 6px;
+    align-items: stretch;
+  }
+
+  .court-time {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 4px;
+    letter-spacing: -0.02em;
+  }
+
+  .court-cell {
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-ja);
+    font-size: 10px;
+    font-weight: 700;
+    border: 1px solid transparent;
+  }
+
+  .court-cell.free {
+    background: var(--surface);
+    color: var(--lime-deep);
+    border-color: var(--border);
+  }
+
+  .court-cell.taken {
+    background: rgba(0,0,0,0.04);
+    color: var(--ink-faint);
+  }
+
+  .court-cell.selected {
+    background: var(--lime);
+    color: var(--court);
+    border-color: var(--lime-deep);
+    font-weight: 800;
+  }
+
+  .court-cell.mine {
+    background: var(--court);
+    color: var(--lime);
+  }
+
+  .court-cell.mine::after { content: '◆'; margin-left: 4px; font-size: 9px; }
+
+  .legend-row {
+    display: flex;
+    gap: 12px;
+    padding: 8px 0 0;
+    margin-bottom: 10px;
+    font-family: var(--font-ja);
+    font-size: 10px;
+    color: var(--ink-muted);
+  }
+
+  .legend-row .item { display: flex; align-items: center; gap: 4px; font-weight: 600; }
+  .legend-row .swatch {
+    width: 10px; height: 10px; border-radius: 3px;
+  }
+
+  .court-action-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 12px 16px 16px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .selection-card {
+    background: linear-gradient(135deg, var(--court), var(--court-2));
+    color: white;
+    padding: 10px 12px;
+    border-radius: 12px;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .selection-card .left { font-family: var(--font-ja); }
+  .selection-card .slot-time {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: -0.01em;
+  }
+  .selection-card .slot-court { font-size: 11px; opacity: 0.8; }
+  .selection-card .price {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px;
+    font-style: italic;
+  }
+
+  .quick-link {
+    display: block;
+    text-align: center;
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--court);
+    margin-top: 8px;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  /* ===== DM LIST (Screen 06) ===== */
+  .dm-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 20px 14px;
+    flex-shrink: 0;
+  }
+
+  .dm-title {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 22px;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .dm-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0 16px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    scrollbar-width: none;
+  }
+  .dm-list::-webkit-scrollbar { display: none; }
+
+  .dm-thread {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    display: flex;
+    gap: 10px;
+    position: relative;
+  }
+
+  .dm-thread.unread { background: linear-gradient(180deg, #FFFDF5 0%, #FFFFFF 100%); border-color: var(--lime-deep); }
+
+  .dm-thread-body { flex: 1; min-width: 0; }
+
+  .dm-thread-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 2px;
+  }
+
+  .dm-thread-name {
+    font-family: var(--font-ja);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--ink);
+  }
+
+  .dm-thread-time {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 10px;
+    color: var(--ink-faint);
+  }
+
+  .dm-thread-context {
+    font-family: var(--font-ja);
+    font-size: 10px;
+    color: var(--court);
+    background: var(--bg);
+    padding: 2px 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin: 2px 0 4px;
+    font-weight: 600;
+  }
+
+  .dm-thread-context.ended { color: var(--ink-muted); }
+  .dm-thread-context.ended::after { content: ' · 終了'; opacity: 0.7; }
+
+  .dm-thread-preview {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+  }
+
+  .unread-badge {
+    background: var(--ember);
+    color: white;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: 11px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    flex-shrink: 0;
+  }
+
+  /* ===== DM 1-on-1 (Screen 07) ===== */
+  .dm-chat-header {
+    background: var(--surface);
+    padding: 8px 14px 14px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+
+  .dm-chat-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .dm-chat-titles { flex: 1; min-width: 0; }
+  .dm-chat-name { font-family: var(--font-ja); font-weight: 700; font-size: 14px; color: var(--ink); }
+  .dm-chat-meta { font-family: var(--font-ja); font-size: 10px; color: var(--ink-muted); font-weight: 600; }
+
+  .pinned-card {
+    background: linear-gradient(135deg, var(--bg) 0%, var(--bg-deep) 100%);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .pinned-icon { color: var(--court); font-size: 14px; flex-shrink: 0; }
+
+  .pinned-info {
+    flex: 1;
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.4;
+  }
+
+  .pinned-info strong { color: var(--ink); font-weight: 700; display: block; }
+  .pinned-info small { color: var(--ink-muted); font-size: 10px; }
+
+  .chat-status {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--lime-deep);
+    padding: 3px 7px;
+    background: var(--court);
+    border-radius: 5px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 14px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scrollbar-width: none;
+  }
+  .messages::-webkit-scrollbar { display: none; }
+
+  .date-divider {
+    text-align: center;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--ink-faint);
+    margin: 4px 0;
+    position: relative;
+  }
+
+  .date-divider::before, .date-divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 60px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .date-divider::before { left: calc(50% - 90px); }
+  .date-divider::after { right: calc(50% - 90px); }
+
+  .msg-row { display: flex; gap: 8px; align-items: flex-end; }
+  .msg-row.self { flex-direction: row-reverse; }
+
+  .msg-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: grid;
+    place-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+  }
+  .msg-avatar.a1 { background: linear-gradient(135deg, #1B3A2F, #2A5644); }
+  .msg-avatar.a2 { background: linear-gradient(135deg, #E85A2C, #C13E15); }
+
+  .msg-body { max-width: 72%; display: flex; flex-direction: column; gap: 2px; }
+  .msg-row.self .msg-body { align-items: flex-end; }
+
+  .msg-bubble {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 9px 12px;
+    border-radius: 14px;
+    border-bottom-left-radius: 4px;
+    font-family: var(--font-ja);
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 1.55;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .msg-row.self .msg-bubble {
+    background: var(--lime);
+    color: var(--court);
+    border-color: var(--lime-deep);
+    border-bottom-left-radius: 14px;
+    border-bottom-right-radius: 4px;
+    font-weight: 500;
+  }
+
+  .msg-time {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: 9px;
+    color: var(--ink-faint);
+    padding: 0 4px;
+  }
+
+  .input-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 10px 14px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .input-extra {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--bg-deep);
+    border: none;
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    color: var(--ink-muted);
+    flex-shrink: 0;
+  }
+
+  .msg-input {
+    flex: 1;
+    background: var(--bg-deep);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 9px 16px;
+    font-family: var(--font-ja);
+    font-size: 12px;
+    color: var(--ink-faint);
+  }
+
+  .send-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--court);
+    border: none;
+    display: grid;
+    place-items: center;
+    color: var(--lime);
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  /* ===== NOTES ===== */
+  .notes {
+    margin-top: 18px;
+    padding: 14px 16px;
+    background: rgba(255,255,255,0.5);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+  }
+
+  .notes-title {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--court);
+    margin-bottom: 8px;
+  }
+
+  .notes ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .notes li {
+    font-family: var(--font-ja);
+    font-size: 11px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    padding-left: 14px;
+    position: relative;
+  }
+
+  .notes li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+    width: 6px;
+    height: 1px;
+    background: var(--court);
+  }
+
+  .notes strong { color: var(--court); font-weight: 700; }
+
+  /* ===== FOOTER ===== */
+  .footer {
+    margin-top: 72px;
+    padding-top: 28px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  .footer-text { font-family: var(--font-ja); font-size: 13px; color: var(--ink-2); }
+  .footer-text strong { color: var(--court); font-weight: 700; }
+  .footer-meta { font-family: var(--font-display); font-style: italic; font-size: 12px; color: var(--ink-muted); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div>
+      <span class="eyebrow">UI Mockup · v0.3 · MVP Core 8 screens</span>
+      <h1>Pickle <em>[仮]</em></h1>
+      <p class="lede">ピックルボールを、ソロ/少人数プレイヤーが、スマホから30秒で仲間を見つけられる軽量マッチング。<strong>「投稿を見る → DMで会話が始まる」</strong>のシンプル動線と、<strong>PBTコートの予約画面</strong>を統合。</p>
+      <span class="changelog">+ 投稿詳細 / 募集管理 / コート予約 / DM一覧 / DM 1対1</span>
+    </div>
+    <div class="hero-meta">
+      <strong>8 screens</strong>
+      MVP-complete<br>
+      Mobile-first · 4-tab navigation
+    </div>
+  </header>
+
+  <!-- ========== SECTION 1: 募集動線 ========== -->
+  <div class="section-divider">
+    <span class="num">01</span>
+    <span class="title">募集動線 / Recruit Flow</span>
+    <span class="rule"></span>
+  </div>
+
+  <section class="phones">
+
+    <!-- 01: 募集一覧 -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">01</span>
+        <span class="name">募集一覧</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="app-header">
+            <span class="app-logo">Pickle</span>
+            <button class="icon-btn">🔔<span class="dot"></span></button>
+          </div>
+          <div class="tabs">
+            <div class="tab active">今日<span class="count">3</span></div>
+            <div class="tab">明日<span class="count">5</span></div>
+            <div class="tab">今週末</div>
+          </div>
+          <div class="filters">
+            <span class="chip solid">レベル ⌄</span>
+            <span class="chip">PBT のみ</span>
+            <span class="chip">主催者 ⌄</span>
+          </div>
+          <div class="feed">
+            <div class="post urgent">
+              <div class="post-head">
+                <div class="post-time"><span class="day">今日</span>19:00<span class="end"> – 21:00</span></div>
+                <div class="post-need"><div class="num">1</div><span class="label">名募集</span></div>
+              </div>
+              <div class="post-host">
+                <span class="avatar a1">N</span>
+                <span class="host-name">西村さん</span>
+                <span class="host-meta">主催 · 中級</span>
+              </div>
+              <p class="post-comment">ダブルス回しましょう。初級も歓迎です🥒</p>
+              <div class="post-tags">
+                <span class="mini-chip lime">中級</span>
+                <span class="mini-chip">PBT</span>
+                <span class="mini-chip">¥1,200/人</span>
+              </div>
+            </div>
+            <div class="post">
+              <div class="post-head">
+                <div class="post-time"><span class="day">今日</span>21:30<span class="end"> – 23:00</span></div>
+                <div class="post-need"><div class="num">2</div><span class="label">名募集</span></div>
+              </div>
+              <div class="post-host">
+                <span class="avatar a2">T</span>
+                <span class="host-name">TAKA</span>
+                <span class="host-meta">主催 · 上級</span>
+              </div>
+              <p class="post-comment">がっつりラリー希望。DUPR 4.0+ で</p>
+              <div class="post-tags">
+                <span class="mini-chip green">上級</span>
+                <span class="mini-chip">PBT</span>
+              </div>
+            </div>
+          </div>
+          <div class="fab"><span class="plus">+</span>募集する</div>
+          <nav class="bottom-nav">
+            <div class="nav-item active"><span class="icon">○</span><span>募集</span></div>
+            <div class="nav-item"><span class="icon">⏱</span><span>コート</span></div>
+            <div class="nav-item"><span class="icon">◇<span class="badge">3</span></span><span>メッセージ</span></div>
+            <div class="nav-item"><span class="icon">△</span><span>プロフィール</span></div>
+          </nav>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li><strong>4タブナビ</strong>：募集 / コート / メッセージ / プロフィール</li>
+          <li>コメント機能は廃止、DM一本に絞った</li>
+          <li>「あと1人」をオレンジで強調、緊急性を演出</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 02: 投稿詳細 (NEW) -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">02</span>
+        <span class="name">投稿詳細<span class="badge">NEW</span></span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="create-header">
+            <button class="back-btn">‹</button>
+            <span class="create-title">募集の詳細</span>
+            <button class="back-btn">⤴</button>
+          </div>
+          <div class="detail-body">
+            <div class="detail-hero">
+              <div class="detail-day">今日</div>
+              <div class="detail-time">19:00<span class="end"> – 21:00</span></div>
+              <div class="detail-host-row">
+                <span class="avatar lg a1">N</span>
+                <div class="detail-host-info">
+                  <div class="detail-host-name">西村さん</div>
+                  <div class="detail-host-meta">主催 · 中級 · DUPR 3.45</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="facility-card" style="margin-bottom:16px;">
+              <div class="facility-mark">P</div>
+              <div class="facility-info">
+                <div class="facility-name">THE PICKLE BANG THEORY</div>
+                <div class="facility-addr">コート2 · 本八幡駅 徒歩1分</div>
+              </div>
+            </div>
+
+            <div class="info-row">
+              <span class="label">募集人数</span>
+              <span class="value"><em>あと1名</em> / 4名中3名</span>
+            </div>
+            <div class="info-row">
+              <span class="label">レベル感</span>
+              <span class="value">中級</span>
+            </div>
+            <div class="info-row">
+              <span class="label">料金</span>
+              <span class="value">¥1,200 / 人</span>
+            </div>
+
+            <div class="detail-comment">
+              ダブルス回しましょう。初級も歓迎です🥒<br>
+              ゲーム形式で2時間。パドルレンタル可、手ぶらでOK！
+            </div>
+
+            <div class="section-title" style="margin-top:8px;">参加メンバー</div>
+            <div class="joined-row">
+              <span class="avatar a1">N</span>
+              <span class="avatar a3">S</span>
+              <span class="avatar a4">R</span>
+              <span class="avatar empty">?</span>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="action-primary">
+              <span class="icon">✓</span>
+              参加表明する
+            </button>
+            <button class="action-secondary">💬 主催者にDMを送る</button>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li>主CTA「参加表明」、副CTA「DM」の <strong>2択動線</strong></li>
+          <li>参加メンバーを顔写真で見せる → 雰囲気がわかる</li>
+          <li>残り人数を <em>あと1名</em> と強調</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 03: 投稿作成 -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">03</span>
+        <span class="name">投稿作成</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="create-header">
+            <button class="back-btn">×</button>
+            <span class="create-title">募集を作成</span>
+            <span class="create-helper">~ 30 sec</span>
+          </div>
+          <div class="form-body">
+            <div class="field">
+              <div class="field-label">日付</div>
+              <div class="pill-group">
+                <span class="pill active">今日</span>
+                <span class="pill">明日</span>
+                <span class="pill">5/30</span>
+                <span class="pill">📅</span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">時間</div>
+              <div class="time-row">
+                <div class="time-input">19:00</div>
+                <span class="time-sep">—</span>
+                <div class="time-input">21:00</div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">場所</div>
+              <div class="facility-card">
+                <div class="facility-mark">P</div>
+                <div class="facility-info">
+                  <div class="facility-name">THE PICKLE BANG THEORY</div>
+                  <div class="facility-addr">本八幡駅 徒歩1分 · 3コート</div>
+                </div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">募集人数</div>
+              <div style="display:flex;align-items:center;">
+                <div class="stepper">
+                  <button class="step-btn">−</button>
+                  <div class="step-num">1</div>
+                  <button class="step-btn">＋</button>
+                </div>
+                <span class="step-hint">名（自分を除く）</span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">レベル感</div>
+              <div class="pill-group">
+                <span class="pill">初級</span>
+                <span class="pill lime">中級</span>
+                <span class="pill">上級</span>
+                <span class="pill">誰でも</span>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-label">ひとこと（任意）</div>
+              <div class="textarea">ダブルス回しましょう。初級も歓迎です🥒</div>
+              <div class="char-count">23 / 140</div>
+            </div>
+          </div>
+          <div class="submit-bar">
+            <button class="submit-btn">募集を投稿する <span class="arr">→</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li><strong>"~ 30 sec"</strong> を可視化。心理的負荷を予告</li>
+          <li>ピル選択中心、タップ最小化</li>
+          <li>場所はPBT固定（MVP）</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 04: 募集管理 (NEW) -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">04</span>
+        <span class="name">募集管理 (主催者)<span class="badge">NEW</span></span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="create-header">
+            <button class="back-btn">‹</button>
+            <span class="create-title">私の募集</span>
+            <button class="back-btn">⋯</button>
+          </div>
+          <div class="manage-hero">
+            <div class="manage-title">今日 19:00 – 21:00</div>
+            <div class="manage-sub">ダブルス @ PBT コート2</div>
+            <div class="status-row">
+              <span class="status-dot"></span>
+              <span class="status-text">募集中</span>
+            </div>
+            <div class="progress"><div class="progress-fill"></div></div>
+            <div class="progress-meta">
+              <span>3 / 4 名 確定</span>
+              <span>あと 1名 募集</span>
+            </div>
+          </div>
+
+          <div class="section-title" style="padding:0 16px;">応募 (3名)</div>
+          <div class="applicant-list">
+            <div class="applicant approved">
+              <span class="avatar lg a3">S</span>
+              <div class="applicant-info">
+                <div class="applicant-name">さくら <span class="tag">承認済</span></div>
+                <div class="applicant-msg">初級 · 「参加します！よろしく」</div>
+              </div>
+              <div class="applicant-actions">
+                <button class="icon-action">💬</button>
+              </div>
+            </div>
+            <div class="applicant approved">
+              <span class="avatar lg a4">R</span>
+              <div class="applicant-info">
+                <div class="applicant-name">Riku <span class="tag">承認済</span></div>
+                <div class="applicant-msg">中級 · 「よろしくお願いします」</div>
+              </div>
+              <div class="applicant-actions">
+                <button class="icon-action">💬</button>
+              </div>
+            </div>
+            <div class="applicant">
+              <span class="avatar lg a5">M</span>
+              <div class="applicant-info">
+                <div class="applicant-name">Mai</div>
+                <div class="applicant-msg">中級 · 「ダブルス得意です！」</div>
+              </div>
+              <div class="applicant-actions">
+                <button class="icon-action accept">✓</button>
+                <button class="icon-action reject">×</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="action-bar">
+            <button class="action-secondary">📝 編集 / 締め切る</button>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li><strong>進捗バー</strong>で募集達成率を一目で</li>
+          <li>承認/拒否/DM の3アクションを各応募者に</li>
+          <li>承認済みカードは <strong>背景色変化</strong> で識別</li>
+        </ul>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ========== SECTION 2: コート & メッセージ ========== -->
+  <div class="section-divider">
+    <span class="num">02</span>
+    <span class="title">コート & コミュニケーション / Court & Comms</span>
+    <span class="rule"></span>
+  </div>
+
+  <section class="phones">
+
+    <!-- 05: コート予約 (NEW) -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">05</span>
+        <span class="name">PBTコート予約<span class="badge">NEW</span></span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="create-header">
+            <button class="back-btn">‹</button>
+            <span class="create-title">PBT コート空き状況</span>
+            <button class="back-btn">ⓘ</button>
+          </div>
+
+          <div class="court-date-tabs">
+            <div class="date-pill active">
+              <div class="num">27</div>
+              <span class="dow">今日</span>
+            </div>
+            <div class="date-pill">
+              <div class="num">28</div>
+              <span class="dow">水</span>
+            </div>
+            <div class="date-pill">
+              <div class="num">29</div>
+              <span class="dow">木</span>
+            </div>
+            <div class="date-pill">
+              <div class="num">30</div>
+              <span class="dow">金</span>
+            </div>
+            <div class="date-pill">
+              <div class="num">31</div>
+              <span class="dow">土</span>
+            </div>
+          </div>
+
+          <div class="court-grid-wrap">
+            <div class="court-header">
+              <div class="court-header-cell"></div>
+              <div class="court-header-cell court">C1</div>
+              <div class="court-header-cell court">C2</div>
+              <div class="court-header-cell court">C3</div>
+            </div>
+
+            <div class="court-row">
+              <div class="court-time">17:00</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell free">空</div>
+            </div>
+            <div class="court-row">
+              <div class="court-time">18:00</div>
+              <div class="court-cell free">空</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell free">空</div>
+            </div>
+            <div class="court-row">
+              <div class="court-time">19:00</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell free">空</div>
+            </div>
+            <div class="court-row">
+              <div class="court-time">20:00</div>
+              <div class="court-cell mine">予約</div>
+              <div class="court-cell taken">×</div>
+              <div class="court-cell free">空</div>
+            </div>
+            <div class="court-row">
+              <div class="court-time">21:00</div>
+              <div class="court-cell free">空</div>
+              <div class="court-cell selected">選択</div>
+              <div class="court-cell free">空</div>
+            </div>
+            <div class="court-row">
+              <div class="court-time">22:00</div>
+              <div class="court-cell free">空</div>
+              <div class="court-cell free">空</div>
+              <div class="court-cell free">空</div>
+            </div>
+
+            <div class="legend-row">
+              <span class="item"><span class="swatch" style="background:var(--surface);border:1px solid var(--border);"></span>空き</span>
+              <span class="item"><span class="swatch" style="background:rgba(0,0,0,0.08);"></span>埋</span>
+              <span class="item"><span class="swatch" style="background:var(--court);"></span>自分の予約</span>
+            </div>
+          </div>
+
+          <div class="court-action-bar">
+            <div class="selection-card">
+              <div class="left">
+                <div class="slot-time">21:00 – 22:00</div>
+                <div class="slot-court">コート 2 · 1時間</div>
+              </div>
+              <div class="price">¥3,600</div>
+            </div>
+            <button class="action-primary" style="height:46px;">
+              reserva.be で予約する
+              <span class="icon">↗</span>
+            </button>
+            <a class="quick-link">＋ この時間で募集を作る</a>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li><strong>3コート × 時間軸</strong>のグリッド。一目で空きが分かる</li>
+          <li>自分の予約は◆マークで強調、確認の手間ゼロ</li>
+          <li><strong>「この時間で募集を作る」</strong> = 予約→募集の閉ループ</li>
+          <li>予約自体は reserva.be に deep-link（MVPは表示のみ）</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 06: DM一覧 (NEW) -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">06</span>
+        <span class="name">DM一覧<span class="badge">NEW</span></span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="dm-header">
+            <span class="dm-title">メッセージ</span>
+            <button class="icon-btn">✎</button>
+          </div>
+
+          <div class="dm-list">
+            <div class="dm-thread unread">
+              <span class="avatar lg a1">N</span>
+              <div class="dm-thread-body">
+                <div class="dm-thread-top">
+                  <span class="dm-thread-name">西村さん</span>
+                  <span class="dm-thread-time">18:44</span>
+                </div>
+                <span class="dm-thread-context">今日 19:00 ダブルス</span>
+                <div class="dm-thread-preview">大丈夫ですよ、コートは18:55から取ってます！</div>
+              </div>
+              <span class="unread-badge">2</span>
+            </div>
+
+            <div class="dm-thread">
+              <span class="avatar lg a2">T</span>
+              <div class="dm-thread-body">
+                <div class="dm-thread-top">
+                  <span class="dm-thread-name">TAKA</span>
+                  <span class="dm-thread-time">14:20</span>
+                </div>
+                <span class="dm-thread-context">明日 21:30 上級ラリー</span>
+                <div class="dm-thread-preview">承認しました！お待ちしてます🔥</div>
+              </div>
+            </div>
+
+            <div class="dm-thread unread">
+              <span class="avatar lg a3">S</span>
+              <div class="dm-thread-body">
+                <div class="dm-thread-top">
+                  <span class="dm-thread-name">さくら</span>
+                  <span class="dm-thread-time">11:02</span>
+                </div>
+                <span class="dm-thread-context">明日 10:00 朝活</span>
+                <div class="dm-thread-preview">パドルレンタルあるんですね、嬉しい！</div>
+              </div>
+              <span class="unread-badge">1</span>
+            </div>
+
+            <div class="dm-thread">
+              <span class="avatar lg a4">R</span>
+              <div class="dm-thread-body">
+                <div class="dm-thread-top">
+                  <span class="dm-thread-name">Riku</span>
+                  <span class="dm-thread-time">5/22</span>
+                </div>
+                <span class="dm-thread-context ended">5/22 朝活ピックル</span>
+                <div class="dm-thread-preview">楽しかったです！またお願いします🙏</div>
+              </div>
+            </div>
+          </div>
+
+          <nav class="bottom-nav">
+            <div class="nav-item"><span class="icon">○</span><span>募集</span></div>
+            <div class="nav-item"><span class="icon">⏱</span><span>コート</span></div>
+            <div class="nav-item active"><span class="icon">◇</span><span>メッセージ</span></div>
+            <div class="nav-item"><span class="icon">△</span><span>プロフィール</span></div>
+          </nav>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li>各スレッドに <strong>投稿コンテキスト</strong>を緑のピルで表示</li>
+          <li>未読は <strong>背景色＋バッジ</strong>で2重に強調</li>
+          <li>終了マッチは「※終了」表記でアーカイブ感を出す</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 07: DM 1対1 (NEW) -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">07</span>
+        <span class="name">DM 1対1<span class="badge">NEW</span></span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+
+          <div class="dm-chat-header">
+            <div class="dm-chat-top">
+              <button class="back-btn" style="width:30px;height:30px;font-size:14px;">‹</button>
+              <span class="avatar a1">N</span>
+              <div class="dm-chat-titles">
+                <div class="dm-chat-name">西村さん</div>
+                <div class="dm-chat-meta">中級 · DUPR 3.45</div>
+              </div>
+              <button class="back-btn" style="width:30px;height:30px;font-size:14px;">⋯</button>
+            </div>
+            <div class="pinned-card">
+              <span class="pinned-icon">📌</span>
+              <div class="pinned-info">
+                <strong>今日 19:00 ダブルス</strong>
+                <small>PBT コート2 · 確定</small>
+              </div>
+              <span class="chat-status">確定</span>
+            </div>
+          </div>
+
+          <div class="messages">
+            <div class="date-divider">今日</div>
+
+            <div class="msg-row">
+              <div class="msg-avatar a1">N</div>
+              <div class="msg-body">
+                <div class="msg-bubble">DMありがとうございます！<br>中級でしたら大歓迎です🥒</div>
+                <div class="msg-time">17:32</div>
+              </div>
+            </div>
+
+            <div class="msg-row self">
+              <div class="msg-avatar a2">A</div>
+              <div class="msg-body">
+                <div class="msg-bubble">参加表明させていただきます！<br>よろしくお願いします</div>
+                <div class="msg-time">17:35</div>
+              </div>
+            </div>
+
+            <div class="msg-row">
+              <div class="msg-avatar a1">N</div>
+              <div class="msg-body">
+                <div class="msg-bubble">承認しました🙏<br>当日よろしくお願いします！</div>
+                <div class="msg-time">17:50</div>
+              </div>
+            </div>
+
+            <div class="msg-row self">
+              <div class="msg-avatar a2">A</div>
+              <div class="msg-body">
+                <div class="msg-bubble">10分ほど遅刻するかもです、すみません🙏</div>
+                <div class="msg-time">18:42</div>
+              </div>
+            </div>
+
+            <div class="msg-row">
+              <div class="msg-avatar a1">N</div>
+              <div class="msg-body">
+                <div class="msg-bubble">大丈夫ですよ、コートは18:55から取ってます！</div>
+                <div class="msg-time">18:44</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="input-bar">
+            <button class="input-extra">＋</button>
+            <div class="msg-input">メッセージを入力...</div>
+            <button class="send-btn">↑</button>
+          </div>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li>上部に <strong>投稿コンテキスト</strong>を常時固定。文脈消失を防ぐ</li>
+          <li>1対1のシンプルな構造（グループチャットなし）</li>
+          <li>マッチ終了 30日後に自動アーカイブ</li>
+          <li>知らない人にいきなりDMできない（投稿経由のみ）</li>
+        </ul>
+      </div>
+    </article>
+
+    <!-- 08: プロフィール -->
+    <article class="phone-card">
+      <div class="phone-label">
+        <span class="num">08</span>
+        <span class="name">プロフィール</span>
+      </div>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="status-bar"><span>9:41</span><span class="icons">●●● 􀙇 􀛨</span></div>
+          <div class="profile-cover">
+            <div class="cover-top">
+              <span>Profile</span>
+              <button class="gear">⚙</button>
+            </div>
+            <div class="big-avatar">A</div>
+            <div class="display-name">Akihiro T.</div>
+            <div class="handle">@akihiro</div>
+            <span class="home-badge">ホーム · THE PICKLE BANG THEORY</span>
+          </div>
+          <div class="stats-row">
+            <div class="stat">
+              <div class="stat-num">24</div>
+              <div class="stat-label">プレイ</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num"><em>18</em></div>
+              <div class="stat-label">マッチ</div>
+            </div>
+            <div class="stat">
+              <div class="stat-num">5</div>
+              <div class="stat-label">主催</div>
+            </div>
+          </div>
+          <div class="profile-body">
+            <div class="section-title">レベル</div>
+            <div class="level-card">
+              <div class="level-badge">中</div>
+              <div class="level-info">
+                <div class="level-name">中級</div>
+                <div class="level-dupr">DUPR <strong>3.45</strong> · doubles</div>
+              </div>
+            </div>
+            <div class="section-title">最近のプレイ</div>
+            <div class="history-list">
+              <div class="history-item">
+                <div class="history-date">24<small>MAY</small></div>
+                <div class="history-divider"></div>
+                <div class="history-info">
+                  <div class="history-title">西村さん主催 · 中級ダブルス</div>
+                  <div class="history-meta">PBT · 19:00–21:00</div>
+                </div>
+              </div>
+              <div class="history-item">
+                <div class="history-date">22<small>MAY</small></div>
+                <div class="history-divider"></div>
+                <div class="history-info">
+                  <div class="history-title">TAKA主催 · 上級ラリー</div>
+                  <div class="history-meta">PBT · 21:30–23:00</div>
+                </div>
+              </div>
+              <div class="history-item">
+                <div class="history-date">18<small>MAY</small></div>
+                <div class="history-divider"></div>
+                <div class="history-info">
+                  <div class="history-title">自分主催 · 朝活ピックル</div>
+                  <div class="history-meta">PBT · 10:00–12:00</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <nav class="bottom-nav">
+            <div class="nav-item"><span class="icon">○</span><span>募集</span></div>
+            <div class="nav-item"><span class="icon">⏱</span><span>コート</span></div>
+            <div class="nav-item"><span class="icon">◇</span><span>メッセージ</span></div>
+            <div class="nav-item active"><span class="icon">△</span><span>プロフィール</span></div>
+          </nav>
+        </div>
+      </div>
+      <div class="notes">
+        <div class="notes-title">UX rationale</div>
+        <ul>
+          <li>ホーム施設をプロフィールの中心要素に</li>
+          <li>3つの数字（プレイ/マッチ/主催）でアクティビティ可視化</li>
+          <li>DUPR ID 任意連携、自己申告で信頼性UP</li>
+        </ul>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-text">
+      Next: <strong>ネーミング決定</strong> → ドメイン取得 → Supabase スキーマ設計
+    </div>
+    <div class="footer-meta">
+      Pickle [仮] · UI Mockup v0.3 · May 2026 · 8 / 8 MVP screens
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>

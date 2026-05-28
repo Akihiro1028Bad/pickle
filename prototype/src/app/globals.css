@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+/* === PBT world tokens (from design-direction.md / thepicklebang.com) === */
+@theme {
+  --color-bg: #0a0a1a;
+  --color-bg-deep: #06060f;
+  --color-surface: #14141f;
+  --color-surface-2: #1c1c2b;
+  --color-ink: #ececec;
+  --color-ink-2: #bfbfc8;
+  --color-muted: #8a8a8a;
+  --color-faint: #54545f;
+  --color-court: #171728;
+  --color-court-2: #24243c;
+  --color-accent: #f6ff54;
+  --color-accent-deep: #d4de2e;
+  --color-on-accent: #0a0a1a;
+  --color-ember: #ff6a3d;
+
+  --font-display: var(--font-orbitron), "Inter", sans-serif;
+  --font-sans: var(--font-inter), "Noto Sans JP", system-ui, sans-serif;
+  --font-ja: var(--font-noto-jp), "Inter", sans-serif;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+html,
+body {
+  background: #050509;
+}
+
+body {
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* subtle cosmic glow for the app column */
+.app-glow {
+  background-image:
+    radial-gradient(ellipse 600px 420px at 8% -6%, rgba(246, 255, 84, 0.1), transparent 55%),
+    radial-gradient(ellipse 520px 380px at 100% 6%, rgba(48, 110, 195, 0.12), transparent 55%);
+}
