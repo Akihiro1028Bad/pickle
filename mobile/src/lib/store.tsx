@@ -12,7 +12,9 @@ interface AppContextValue {
   announcements: Announcement[];
   unreadNewsCount: number;
   addPost: (body: string, duration?: string) => void;
+  ensureThreadForAuthor: (name: string, meta?: string) => string;
   sendMessage: (threadId: string, text: string) => void;
+  receiveMessage: (threadId: string, text: string) => void;
   markRead: (threadId: string) => void;
   markNewsRead: () => void;
 }
@@ -54,6 +56,20 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     [user],
   );
 
+  const ensureThreadForAuthor = useCallback(
+    (name: string, meta?: string) => {
+      const existing = threads.find((t) => t.name === name);
+      if (existing) return existing.id;
+      const id = nextId("t");
+      setThreads((prev) => [
+        { id, name, meta, preview: "（まだメッセージはありません）", time: "たった今", unread: 0, messages: [] },
+        ...prev,
+      ]);
+      return id;
+    },
+    [threads],
+  );
+
   const sendMessage = useCallback((threadId: string, text: string) => {
     setThreads((prev) =>
       prev.map((t) =>
@@ -63,6 +79,21 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
               preview: text,
               time: "たった今",
               messages: [...t.messages, { id: nextId("m"), fromSelf: true, text, time: "今" }],
+            }
+          : t,
+      ),
+    );
+  }, []);
+
+  const receiveMessage = useCallback((threadId: string, text: string) => {
+    setThreads((prev) =>
+      prev.map((t) =>
+        t.id === threadId
+          ? {
+              ...t,
+              preview: text,
+              time: "たった今",
+              messages: [...t.messages, { id: nextId("m"), fromSelf: false, text, time: "今" }],
             }
           : t,
       ),
@@ -81,11 +112,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
       announcements,
       unreadNewsCount,
       addPost,
+      ensureThreadForAuthor,
       sendMessage,
+      receiveMessage,
       markRead,
       markNewsRead,
     }),
-    [user, posts, threads, announcements, unreadNewsCount, addPost, sendMessage, markRead, markNewsRead],
+    [user, posts, threads, announcements, unreadNewsCount, addPost, ensureThreadForAuthor, sendMessage, receiveMessage, markRead, markNewsRead],
   );
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

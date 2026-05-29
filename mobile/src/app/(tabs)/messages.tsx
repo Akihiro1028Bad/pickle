@@ -15,6 +15,9 @@ export default function MessagesScreen() {
     <Screen>
       <View style={styles.header}>
         <Text style={styles.title}>メッセージ</Text>
+        <View style={styles.composeBtn}>
+          <Text style={{ color: colors.ink2, fontSize: 14 }}>✎</Text>
+        </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
@@ -58,8 +61,9 @@ export default function MessagesScreen() {
 }
 
 const styles = StyleSheet.create({
-  header: { paddingHorizontal: 20, paddingVertical: 12 },
+  header: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 20, paddingVertical: 12 },
   title: { color: colors.ink, fontSize: 22, fontWeight: "600", letterSpacing: -0.5 },
+  composeBtn: { width: 32, height: 32, borderRadius: 16, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center" },
   list: { paddingHorizontal: 16, gap: 6 },
   row: {
     flexDirection: "row",

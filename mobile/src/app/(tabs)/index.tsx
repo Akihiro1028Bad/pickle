@@ -1,4 +1,4 @@
-import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
+import { ScrollView, View, Text, Pressable, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Avatar } from "@/components/Avatar";
@@ -22,9 +22,13 @@ export default function BoardScreen() {
       {/* ヘッダ */}
       <View style={styles.header}>
         <View style={styles.brandRow}>
-          <Text style={styles.brand}>PBT</Text>
+          <Image
+            source={require("@/assets/images/yoko-neon.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
           <View style={styles.matchTag}>
-            <Text style={styles.matchTagTxt}>MATCH</Text>
+            <Text style={styles.matchTagTxt}>Match</Text>
           </View>
         </View>
         <Pressable style={styles.bell} onPress={() => router.push("/news")}>
@@ -101,7 +105,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
   },
   brandRow: { flexDirection: "row", alignItems: "center", gap: 8 },
-  brand: { color: colors.ink, fontSize: 20, fontWeight: "900", letterSpacing: 1 },
+  logo: { width: 120, height: 24 },
   matchTag: { backgroundColor: colors.accent, borderRadius: 3, paddingHorizontal: 6, paddingVertical: 2 },
   matchTagTxt: { color: colors.onAccent, fontSize: 10, fontWeight: "800", letterSpacing: 2 },
   bell: {

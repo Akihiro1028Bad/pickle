@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "@/components/Screen";
+import { AccentTag } from "@/components/Badges";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
 
@@ -20,24 +21,27 @@ export default function NewsScreen() {
           <Text style={styles.backTxt}>‹</Text>
         </Pressable>
         <Text style={styles.headerTitle}>お知らせ</Text>
-        <View style={{ width: 34 }} />
+        <View style={styles.pbtTag}>
+          <Text style={styles.pbtTxt}>PBT</Text>
+        </View>
       </View>
 
       <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
-        {announcements.map((a) => (
-          <View key={a.id} style={[styles.card, a.important && styles.cardImportant]}>
-            <View style={styles.cardTop}>
-              {a.important && (
-                <View style={styles.importantTag}>
-                  <Text style={styles.importantTxt}>重要</Text>
-                </View>
-              )}
-              <Text style={styles.date}>{a.publishedAt}</Text>
+        {announcements.length === 0 ? (
+          <Text style={styles.empty}>お知らせはまだありません</Text>
+        ) : (
+          announcements.map((a) => (
+            <View key={a.id} style={[styles.card, a.important && styles.cardImportant]}>
+              <View style={styles.cardTop}>
+                {a.important && <AccentTag label="重要" />}
+                <Text style={styles.date}>{a.publishedAt}</Text>
+              </View>
+              <Text style={styles.title}>{a.title}</Text>
+              <Text style={styles.bodyTxt}>{a.body}</Text>
             </View>
-            <Text style={styles.title}>{a.title}</Text>
-            <Text style={styles.bodyTxt}>{a.body}</Text>
-          </View>
-        ))}
+          ))
+        )}
+        <Text style={styles.footer}>THE PICKLE BANG THEORY 運営からのお知らせ</Text>
         <View style={{ height: 24 }} />
       </ScrollView>
     </Screen>
@@ -49,13 +53,15 @@ const styles = StyleSheet.create({
   back: { width: 34, height: 34, borderRadius: 17, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center" },
   backTxt: { color: colors.ink, fontSize: 20, lineHeight: 22 },
   headerTitle: { color: colors.ink, fontSize: 15, fontWeight: "700" },
-  list: { paddingHorizontal: 20, paddingTop: 8, gap: 12 },
-  card: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, borderRadius: 12, padding: 16 },
-  cardImportant: { borderColor: "rgba(255,106,61,0.4)" },
-  cardTop: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 8 },
-  importantTag: { backgroundColor: "rgba(255,106,61,0.15)", borderRadius: 4, paddingHorizontal: 6, paddingVertical: 2 },
-  importantTxt: { color: colors.ember, fontSize: 10, fontWeight: "800" },
-  date: { color: colors.faint, fontSize: 11, marginLeft: "auto" },
-  title: { color: colors.ink, fontSize: 14, fontWeight: "700" },
+  pbtTag: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, borderRadius: 999, paddingHorizontal: 10, paddingVertical: 4 },
+  pbtTxt: { color: colors.accent, fontSize: 10, fontWeight: "700", letterSpacing: 2 },
+  list: { paddingHorizontal: 20, paddingTop: 4, gap: 12 },
+  empty: { textAlign: "center", color: colors.muted, fontSize: 13, marginTop: 80 },
+  card: { borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, borderRadius: 16, padding: 16 },
+  cardImportant: { borderColor: "rgba(246,255,84,0.25)", backgroundColor: "rgba(246,255,84,0.05)" },
+  cardTop: { flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 },
+  date: { color: colors.muted, fontSize: 11 },
+  title: { color: colors.ink, fontSize: 14, fontWeight: "700", lineHeight: 20 },
   bodyTxt: { color: colors.ink2, fontSize: 12, lineHeight: 19, marginTop: 6 },
+  footer: { textAlign: "center", color: colors.faint, fontSize: 11, marginTop: 20 },
 });
