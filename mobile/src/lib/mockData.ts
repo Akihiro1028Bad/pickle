@@ -1,6 +1,5 @@
-import type { Post, Thread, Announcement } from "./types";
+import type { Post, Thread, Announcement, User } from "./types";
 
-// 運営からのお知らせ（管理画面で「公開」されたものを表示する想定のダミー）
 export const seedAnnouncements: Announcement[] = [
   {
     id: "a1",
@@ -191,26 +190,17 @@ export const seedThreads: Thread[] = [
       { id: "t5m3", fromSelf: false, text: "打ち上げも楽しみにしてます🍻", time: "昨日" },
     ],
   },
-  {
-    id: "t6",
-    name: "ナギ",
-    meta: "中級",
-    preview: "楽しかったです！またお願いします🙏",
-    time: "5/22",
-    messages: [
-      { id: "t6m1", fromSelf: true, text: "今日はありがとうございました！", time: "5/22" },
-      { id: "t6m2", fromSelf: false, text: "楽しかったです！またお願いします🙏", time: "5/22" },
-    ],
-  },
-  {
-    id: "t7",
-    name: "ダイ",
-    meta: "上級 · DUPR 3.9",
-    preview: "サーブの動画、参考にしてみてください",
-    time: "5/20",
-    messages: [
-      { id: "t7m1", fromSelf: true, text: "朝練の件、よろしくお願いします！", time: "5/20" },
-      { id: "t7m2", fromSelf: false, text: "了解です。サーブの動画、参考にしてみてください", time: "5/20" },
-    ],
-  },
 ];
+
+/** デモ用の初期ログインユーザー（プロトタイプは常時ログイン済み） */
+export const DEMO_USER: User = {
+  name: "Akihiro T.",
+  handle: "@akihiro",
+  email: "akihiro@example.com",
+  level: "中級",
+  dupr: "3.6",
+  area: "都内・PBTコート周辺",
+  availability: ["平日夜", "土日午前"],
+  badges: ["認定"],
+  provider: "google",
+};
