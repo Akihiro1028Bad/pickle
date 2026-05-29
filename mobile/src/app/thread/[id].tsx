@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Avatar } from "@/components/Avatar";
 import { AccentTag } from "@/components/Badges";
+import { ReportSheet } from "@/components/ReportSheet";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
 
@@ -22,6 +23,7 @@ export default function ThreadScreen() {
   const { threads, sendMessage, receiveMessage, markRead } = useApp();
   const thread = threads.find((t) => t.id === id);
   const [text, setText] = useState("");
+  const [reporting, setReporting] = useState(false);
   const scrollRef = useRef<ScrollView>(null);
   const ackedRef = useRef(false);
 
@@ -62,6 +64,11 @@ export default function ThreadScreen() {
           </View>
           {!!thread?.meta && <Text style={styles.headerMeta}>{thread.meta}</Text>}
         </View>
+        {thread && !thread.official && (
+          <Pressable style={styles.menuBtn} onPress={() => setReporting(true)} accessibilityLabel="メニュー">
+            <Text style={styles.menuTxt}>⋯</Text>
+          </Pressable>
+        )}
       </View>
 
       <KeyboardAvoidingView
@@ -109,6 +116,13 @@ export default function ThreadScreen() {
           </Pressable>
         </View>
       </KeyboardAvoidingView>
+
+      <ReportSheet
+        visible={reporting}
+        targetType="dm"
+        targetLabel={`${thread?.name ?? ""} さんとのDM`}
+        onClose={() => setReporting(false)}
+      />
     </SafeAreaView>
   );
 }
@@ -121,6 +135,8 @@ const styles = StyleSheet.create({
   nameRow: { flexDirection: "row", alignItems: "center", gap: 6 },
   headerName: { color: colors.ink, fontSize: 14, fontWeight: "700" },
   headerMeta: { color: colors.muted, fontSize: 10, marginTop: 1 },
+  menuBtn: { width: 30, height: 30, borderRadius: 15, borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, alignItems: "center", justifyContent: "center" },
+  menuTxt: { color: colors.ink, fontSize: 16, lineHeight: 18 },
   messages: { padding: 14, gap: 10 },
   dayLabel: { textAlign: "center", color: colors.faint, fontSize: 11, fontStyle: "italic" },
   emptyHint: { textAlign: "center", color: colors.faint, fontSize: 11, marginTop: 24 },

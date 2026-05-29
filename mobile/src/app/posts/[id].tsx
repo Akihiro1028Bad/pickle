@@ -1,8 +1,10 @@
-import { ScrollView, View, Text, Pressable, StyleSheet, Alert } from "react-native";
+import { useState } from "react";
+import { ScrollView, View, Text, Pressable, StyleSheet } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Avatar } from "@/components/Avatar";
 import { PbtBadges, AccentTag } from "@/components/Badges";
+import { ReportSheet } from "@/components/ReportSheet";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
 
@@ -13,22 +15,13 @@ export default function PostDetailScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { posts, ensureThreadForAuthor } = useApp();
   const post = posts.find((p) => p.id === id);
+  const [reporting, setReporting] = useState(false);
 
   const openDM = () => {
     if (!post) return;
     const threadId = ensureThreadForAuthor(post.author, post.level);
     router.push({ pathname: "/thread/[id]", params: { id: threadId } });
   };
-
-  const onReport = () => {
-    Alert.alert("この投稿を通報", "通報理由を選んでください", [
-      { text: "スパム・宣伝", onPress: reported },
-      { text: "不適切な内容", onPress: reported },
-      { text: "なりすまし", onPress: reported },
-      { text: "キャンセル", style: "cancel" },
-    ]);
-  };
-  const reported = () => Alert.alert("通報を受け付けました", "ご報告ありがとうございます。運営が確認します。");
 
   return (
     <Screen>
@@ -79,7 +72,7 @@ export default function PostDetailScreen() {
               </View>
             </View>
 
-            <Pressable style={styles.reportBtn} onPress={onReport}>
+            <Pressable style={styles.reportBtn} onPress={() => setReporting(true)}>
               <Text style={styles.reportTxt}>⚠️ この投稿を通報する</Text>
             </Pressable>
           </ScrollView>
@@ -89,6 +82,13 @@ export default function PostDetailScreen() {
               <Text style={styles.dmTxt}>💬 DMで相談する</Text>
             </Pressable>
           </View>
+
+          <ReportSheet
+            visible={reporting}
+            targetType="post"
+            targetLabel={`${post.author} さんの投稿`}
+            onClose={() => setReporting(false)}
+          />
         </>
       )}
     </Screen>
