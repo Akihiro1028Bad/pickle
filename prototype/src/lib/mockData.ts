@@ -35,7 +35,7 @@ export const seedPosts: Post[] = [
   },
   {
     id: "p1",
-    author: "西村さん",
+    author: "リク",
     timeAgo: "2時間前",
     level: "中級 · DUPR 3.45",
     body: "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK、パドルレンタルあります🥒\nゲーム形式でゆるく回しましょう。初級さんも歓迎です。",
@@ -45,7 +45,7 @@ export const seedPosts: Post[] = [
   },
   {
     id: "p2",
-    author: "TAKA",
+    author: "タカ",
     timeAgo: "4時間前",
     level: "上級 · DUPR 4.1",
     body: "明日 21:30〜 上級ラリーしたい人募集。DUPR 4.0+ でがっつり2時間、コート代割り勘でお願いします🔥",
@@ -54,7 +54,7 @@ export const seedPosts: Post[] = [
   },
   {
     id: "p3",
-    author: "さくら",
+    author: "サクラ",
     timeAgo: "5時間前",
     level: "初級",
     body: "今週末の朝活メンバー募集中☀️ 初心者歓迎、ゆるく楽しくやりましょう。時間は相談で！",
@@ -64,42 +64,42 @@ export const seedPosts: Post[] = [
   },
   {
     id: "p4",
-    author: "Kenji",
+    author: "ケンタ",
     timeAgo: "6時間前",
     level: "中級 · DUPR 3.6",
     body: "土曜の午前、ダブルス練習しませんか？9:00〜11:00 PBTコート1。3名募集、初中級歓迎です🎾",
   },
   {
     id: "p5",
-    author: "Mai",
+    author: "マリン",
     timeAgo: "7時間前",
     level: "中級",
     body: "金曜夜にゲームしたい人〜！20:00〜2時間、レベル不問でわいわいやりましょう😊 終わったら近くで軽く打ち上げも🍻",
   },
   {
     id: "p7",
-    author: "ゆうこ",
+    author: "ユウ",
     timeAgo: "昨日",
     level: "初級 · 初めて3ヶ月",
     body: "ピックル始めたばかりです🔰 ルールはなんとなく分かる程度。優しく一緒に打ってくれる方いませんか？平日のお昼希望です🙏",
   },
   {
     id: "p8",
-    author: "Ren",
+    author: "レン",
     timeAgo: "昨日",
     level: "中級 · DUPR 3.5",
     body: "日曜 15:00〜17:00 コート3で4人ゲーム。あと2名募集！パドルレンタルあるので手ぶらでどうぞ。",
   },
   {
     id: "p9",
-    author: "あさみ",
+    author: "アサ",
     timeAgo: "2日前",
     level: "中級",
     body: "女子だけでまったりラリーしませんか？🌙 水曜の夜20時〜、PBTにて。ブランクある人も大歓迎です！",
   },
   {
     id: "p10",
-    author: "Sho",
+    author: "ショウ",
     timeAgo: "3日前",
     level: "上級 · DUPR 4.3",
     body: "大会前の調整パートナー募集。本気で打ち合える方、平日夜にどこかで。スコア付きゲーム回したいです。",
@@ -128,7 +128,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t1",
-    name: "西村さん",
+    name: "リク",
     meta: "中級 · DUPR 3.45",
     preview: "大丈夫ですよ、コートは18:55から取ってます！",
     time: "18:44",
@@ -143,7 +143,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t2",
-    name: "TAKA",
+    name: "タカ",
     meta: "上級 · DUPR 4.1",
     preview: "お待ちしてます🔥",
     time: "14:20",
@@ -155,7 +155,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t3",
-    name: "さくら",
+    name: "サクラ",
     meta: "初級",
     preview: "パドルレンタルあるんですね、嬉しい！",
     time: "11:02",
@@ -168,7 +168,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t4",
-    name: "Kenji",
+    name: "ケンタ",
     meta: "中級 · DUPR 3.6",
     preview: "土曜9時、コート1で待ってます！",
     time: "昨日",
@@ -181,7 +181,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t5",
-    name: "Mai",
+    name: "マリン",
     meta: "中級",
     preview: "打ち上げも楽しみにしてます🍻",
     time: "昨日",
@@ -193,7 +193,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t6",
-    name: "Riku",
+    name: "ナギ",
     meta: "中級",
     preview: "楽しかったです！またお願いします🙏",
     time: "5/22",
@@ -204,7 +204,7 @@ export const seedThreads: Thread[] = [
   },
   {
     id: "t7",
-    name: "Daiki",
+    name: "ダイ",
     meta: "上級 · DUPR 3.9",
     preview: "サーブの動画、参考にしてみてください",
     time: "5/20",
