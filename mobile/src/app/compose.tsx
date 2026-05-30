@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
+import { RegionChips } from "@/components/RegionChips";
 
 const PLACEHOLDER = "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK🥒";
 const DURATIONS = ["3時間", "5時間", "1日", "3日"];
@@ -14,10 +15,11 @@ export default function ComposeScreen() {
   const { addPost } = useApp();
   const [text, setText] = useState("");
   const [duration, setDuration] = useState("1日");
+  const [regions, setRegions] = useState<string[]>([]);
 
   const onSubmit = () => {
     const body = text.trim();
-    if (body) addPost(body, duration);
+    if (body) addPost(body, duration, regions);
     router.back();
   };
 
@@ -61,6 +63,12 @@ export default function ComposeScreen() {
           <Text style={styles.helper}>
             選んだ時間が過ぎると自然に下がっていく目安です（手動の締め切り操作は不要）。
           </Text>
+
+          <Text style={[styles.label, { marginTop: 24 }]}>発信する地域（任意・複数選択可）</Text>
+          <Text style={[styles.helper, { marginTop: 0, marginBottom: 10 }]}>
+            選ばない場合は<Text style={{ color: colors.accent, fontWeight: "700" }}>全国向け</Text>として表示されます。
+          </Text>
+          <RegionChips value={regions} onChange={setRegions} />
         </ScrollView>
 
         <View style={styles.footer}>

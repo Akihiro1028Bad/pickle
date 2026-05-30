@@ -40,6 +40,7 @@ export const seedPosts: Post[] = [
     body: "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK、パドルレンタルあります🥒\nゲーム形式でゆるく回しましょう。初級さんも歓迎です。",
     authorBadges: ["認定"],
     featured: true,
+    regions: ["千葉県", "東京都"],
     duration: "3時間",
   },
   {
@@ -49,6 +50,7 @@ export const seedPosts: Post[] = [
     level: "上級 · DUPR 4.1",
     body: "明日 21:30〜 上級ラリーしたい人募集。DUPR 4.0+ でがっつり2時間、コート代割り勘でお願いします🔥",
     authorBadges: ["契約選手"],
+    regions: ["東京都"],
     duration: "1日",
   },
   {
@@ -59,6 +61,7 @@ export const seedPosts: Post[] = [
     body: "今週末の朝活メンバー募集中☀️ 初心者歓迎、ゆるく楽しくやりましょう。時間は相談で！",
     authorBadges: ["スタッフ"],
     featured: true,
+    regions: ["神奈川県"],
     duration: "3日",
   },
   {
@@ -67,6 +70,7 @@ export const seedPosts: Post[] = [
     timeAgo: "6時間前",
     level: "中級 · DUPR 3.6",
     body: "土曜の午前、ダブルス練習しませんか？9:00〜11:00 PBTコート1。3名募集、初中級歓迎です🎾",
+    regions: ["千葉県"],
   },
   {
     id: "p5",
@@ -74,6 +78,7 @@ export const seedPosts: Post[] = [
     timeAgo: "7時間前",
     level: "中級",
     body: "金曜夜にゲームしたい人〜！20:00〜2時間、レベル不問でわいわいやりましょう😊 終わったら近くで軽く打ち上げも🍻",
+    regions: ["東京都"],
   },
   {
     id: "p7",
@@ -81,6 +86,7 @@ export const seedPosts: Post[] = [
     timeAgo: "昨日",
     level: "初級 · 初めて3ヶ月",
     body: "ピックル始めたばかりです🔰 ルールはなんとなく分かる程度。優しく一緒に打ってくれる方いませんか？平日のお昼希望です🙏",
+    regions: ["千葉県"],
   },
   {
     id: "p8",
@@ -88,6 +94,7 @@ export const seedPosts: Post[] = [
     timeAgo: "昨日",
     level: "中級 · DUPR 3.5",
     body: "日曜 15:00〜17:00 コート3で4人ゲーム。あと2名募集！パドルレンタルあるので手ぶらでどうぞ。",
+    regions: ["埼玉県"],
   },
   {
     id: "p9",
@@ -95,6 +102,7 @@ export const seedPosts: Post[] = [
     timeAgo: "2日前",
     level: "中級",
     body: "女子だけでまったりラリーしませんか？🌙 水曜の夜20時〜、PBTにて。ブランクある人も大歓迎です！",
+    regions: ["千葉県", "東京都"],
   },
   {
     id: "p10",
@@ -102,6 +110,7 @@ export const seedPosts: Post[] = [
     timeAgo: "3日前",
     level: "上級 · DUPR 4.3",
     body: "大会前の調整パートナー募集。本気で打ち合える方、平日夜にどこかで。スコア付きゲーム回したいです。",
+    regions: ["大阪府"],
   },
 ];
 

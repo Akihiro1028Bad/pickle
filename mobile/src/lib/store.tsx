@@ -11,7 +11,7 @@ interface AppContextValue {
   threads: Thread[];
   announcements: Announcement[];
   unreadNewsCount: number;
-  addPost: (body: string, duration?: string) => void;
+  addPost: (body: string, duration?: string, regions?: string[]) => void;
   ensureThreadForAuthor: (name: string, meta?: string) => string;
   sendMessage: (threadId: string, text: string) => void;
   receiveMessage: (threadId: string, text: string) => void;
@@ -38,7 +38,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const addPost = useCallback(
-    (body: string, duration?: string) => {
+    (body: string, duration?: string, regions?: string[]) => {
       setPosts((prev) => [
         {
           id: nextId("p"),
@@ -48,6 +48,7 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           self: true,
           level: user.level ? `${user.level}${user.dupr ? ` · DUPR ${user.dupr}` : ""}` : undefined,
           authorBadges: user.badges,
+          regions: regions && regions.length > 0 ? regions : undefined,
           duration: duration ?? "1日",
         },
         ...prev,

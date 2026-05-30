@@ -1,10 +1,13 @@
-import { ScrollView, View, Text, Pressable, StyleSheet, Image } from "react-native";
+import { useState } from "react";
+import { ScrollView, View, Text, Pressable, StyleSheet, Image, Modal } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Avatar } from "@/components/Avatar";
 import { PbtBadges, AccentTag } from "@/components/Badges";
+import { RegionChips } from "@/components/RegionChips";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
+import { regionLabel } from "@/lib/regions";
 import type { Post } from "@/lib/types";
 
 export default function BoardScreen() {
@@ -12,9 +15,21 @@ export default function BoardScreen() {
   const { posts, announcements, unreadNewsCount } = useApp();
   const latestNews = announcements[0];
 
-  const official = posts.filter((p) => p.official);
-  const featured = posts.filter((p) => p.featured && !p.official);
-  const normal = posts.filter((p) => !p.featured && !p.official);
+  // 地域フィルタ：未選択＝全件。選択時＝その地域向け＋全国向け（地域未指定）。
+  const [regionFilter, setRegionFilter] = useState<string[]>([]);
+  const [filterVisible, setFilterVisible] = useState(false);
+
+  const matchesFilter = (p: Post) => {
+    if (regionFilter.length === 0) return true;
+    const target = p.regions ?? [];
+    if (target.length === 0) return true;
+    return target.some((r) => regionFilter.includes(r));
+  };
+  const visible = posts.filter(matchesFilter);
+
+  const official = visible.filter((p) => p.official);
+  const featured = visible.filter((p) => p.featured && !p.official);
+  const normal = visible.filter((p) => !p.featured && !p.official);
   const ordered = [...official, ...featured, ...normal];
 
   return (
@@ -35,6 +50,23 @@ export default function BoardScreen() {
           <Text style={{ fontSize: 16 }}>🔔</Text>
           {unreadNewsCount > 0 && <View style={styles.bellDot} />}
         </Pressable>
+      </View>
+
+      {/* 地域フィルタ */}
+      <View style={styles.filterBar}>
+        <Pressable
+          style={[styles.filterBtn, regionFilter.length > 0 && styles.filterBtnOn]}
+          onPress={() => setFilterVisible(true)}
+        >
+          <Text style={[styles.filterTxt, regionFilter.length > 0 && { color: colors.accent }]}>
+            📍 {regionFilter.length > 0 ? `地域: ${regionLabel(regionFilter)}` : "地域で絞り込み"}
+          </Text>
+        </Pressable>
+        {regionFilter.length > 0 && (
+          <Pressable onPress={() => setRegionFilter([])}>
+            <Text style={styles.clearTxt}>クリア</Text>
+          </Pressable>
+        )}
       </View>
 
       <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
@@ -61,6 +93,32 @@ export default function BoardScreen() {
         </View>
         <Text style={styles.fabTxt}>投稿する</Text>
       </Pressable>
+
+      {/* 地域フィルタのシート */}
+      <Modal visible={filterVisible} transparent animationType="slide" onRequestClose={() => setFilterVisible(false)}>
+        <View style={styles.sheetFill}>
+          <Pressable style={styles.sheetOverlay} onPress={() => setFilterVisible(false)} />
+          <View style={styles.sheet}>
+            <View style={styles.sheetGrab} />
+            <View style={styles.sheetHead}>
+              <Text style={styles.sheetTitle}>地域で絞り込み</Text>
+              {regionFilter.length > 0 && (
+                <Pressable onPress={() => setRegionFilter([])}>
+                  <Text style={styles.clearTxt}>クリア</Text>
+                </Pressable>
+              )}
+            </View>
+            <ScrollView showsVerticalScrollIndicator={false} style={{ maxHeight: 420 }}>
+              <RegionChips value={regionFilter} onChange={setRegionFilter} />
+              <Text style={styles.sheetNote}>選んだ地域向け＋「全国向け」の投稿が表示されます。</Text>
+              <View style={{ height: 12 }} />
+            </ScrollView>
+            <Pressable style={styles.applyBtn} onPress={() => setFilterVisible(false)}>
+              <Text style={styles.applyTxt}>表示する</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </Screen>
   );
 }
@@ -87,11 +145,18 @@ function PostCard({ post, onPress }: { post: Post; onPress: () => void }) {
       <Text style={styles.body} numberOfLines={2}>
         {post.body}
       </Text>
-      {post.duration && (
-        <View style={styles.durationChip}>
-          <Text style={styles.durationTxt}>🕒 {post.duration}表示</Text>
+      <View style={styles.metaRow}>
+        <View style={[styles.regionChip, post.regions && post.regions.length > 0 ? styles.regionChipOn : null]}>
+          <Text style={[styles.regionTxt, post.regions && post.regions.length > 0 ? { color: colors.accent } : null]}>
+            📍 {regionLabel(post.regions)}
+          </Text>
         </View>
-      )}
+        {post.duration && (
+          <View style={styles.durationChip}>
+            <Text style={styles.durationTxt}>🕒 {post.duration}表示</Text>
+          </View>
+        )}
+      </View>
     </Pressable>
   );
 }
@@ -156,15 +221,31 @@ const styles = StyleSheet.create({
   author: { color: colors.ink, fontSize: 13, fontWeight: "700" },
   time: { marginLeft: "auto", color: colors.faint, fontSize: 10 },
   body: { color: colors.ink2, fontSize: 13, lineHeight: 20 },
+  metaRow: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 10 },
+  regionChip: { backgroundColor: colors.bg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 3 },
+  regionChipOn: { backgroundColor: "rgba(246,255,84,0.15)" },
+  regionTxt: { color: colors.faint, fontSize: 10, fontWeight: "700" },
   durationChip: {
-    alignSelf: "flex-start",
-    marginTop: 10,
     backgroundColor: colors.bg,
     borderRadius: 999,
     paddingHorizontal: 8,
     paddingVertical: 3,
   },
   durationTxt: { color: colors.faint, fontSize: 10 },
+  filterBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 20, paddingBottom: 8 },
+  filterBtn: { flexDirection: "row", alignItems: "center", borderWidth: 1, borderColor: colors.border, backgroundColor: colors.surface, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 7 },
+  filterBtnOn: { borderColor: colors.accent, backgroundColor: "rgba(246,255,84,0.1)" },
+  filterTxt: { color: colors.ink2, fontSize: 12, fontWeight: "700" },
+  clearTxt: { color: colors.muted, fontSize: 11, fontWeight: "700", textDecorationLine: "underline" },
+  sheetFill: { flex: 1, justifyContent: "flex-end" },
+  sheetOverlay: { ...StyleSheet.absoluteFillObject, backgroundColor: "rgba(0,0,0,0.55)" },
+  sheet: { maxHeight: "85%", borderTopWidth: 1, borderTopColor: colors.borderStrong, backgroundColor: colors.surface, borderTopLeftRadius: 20, borderTopRightRadius: 20, paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28 },
+  sheetGrab: { alignSelf: "center", width: 40, height: 4, borderRadius: 2, backgroundColor: "rgba(255,255,255,0.15)", marginBottom: 12 },
+  sheetHead: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 },
+  sheetTitle: { color: colors.ink, fontSize: 15, fontWeight: "700" },
+  sheetNote: { color: colors.muted, fontSize: 11, lineHeight: 17, marginTop: 12 },
+  applyBtn: { marginTop: 12, height: 46, borderRadius: 8, backgroundColor: colors.accent, alignItems: "center", justifyContent: "center" },
+  applyTxt: { color: colors.onAccent, fontSize: 14, fontWeight: "800" },
   fab: {
     position: "absolute",
     right: 20,
