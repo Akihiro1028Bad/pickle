@@ -8,7 +8,7 @@ import { useApp } from "@/lib/store";
 import { BottomNav } from "@/components/BottomNav";
 import { Avatar } from "@/components/Avatar";
 import { PbtBadges } from "@/components/PbtBadge";
-import { RegionChips } from "@/components/RegionChips";
+import { RegionSelect } from "@/components/RegionSelect";
 import { regionLabel } from "@/lib/regions";
 import type { Post } from "@/lib/types";
 
@@ -24,7 +24,6 @@ export default function BoardPage() {
 
   // 地域フィルタ：未選択＝全件。選択時＝その地域向け＋全国向け（地域未指定）を表示。
   const [regionFilter, setRegionFilter] = useState<string[]>([]);
-  const [filterOpen, setFilterOpen] = useState(false);
 
   const matchesFilter = (p: Post) => {
     if (regionFilter.length === 0) return true;
@@ -135,30 +134,17 @@ export default function BoardPage() {
 
       <main className="no-scrollbar flex flex-1 flex-col gap-3 overflow-y-auto px-5 pb-28 pt-1">
         {/* 地域フィルタ */}
-        <div>
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => setFilterOpen((v) => !v)}
-              className={`flex items-center gap-1.5 rounded-full border px-3 py-1.5 font-ja text-[12px] font-bold ${
-                regionFilter.length > 0 ? "border-accent bg-accent/10 text-accent" : "border-white/10 bg-surface text-ink-2"
-              }`}
-            >
-              📍 {regionFilter.length > 0 ? `地域: ${regionLabel(regionFilter)}` : "地域で絞り込み"}
-              <span className="text-[10px]">{filterOpen ? "▲" : "▼"}</span>
-            </button>
-            {regionFilter.length > 0 && (
-              <button onClick={() => setRegionFilter([])} className="font-ja text-[11px] font-bold text-muted underline underline-offset-2">
-                クリア
-              </button>
-            )}
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <RegionSelect value={regionFilter} onChange={setRegionFilter} placeholder="地域で絞り込み" />
           </div>
-          {filterOpen && (
-            <div className="mt-2 rounded-xl border border-white/10 bg-surface p-3">
-              <RegionChips value={regionFilter} onChange={setRegionFilter} />
-              <p className="mt-2 font-ja text-[11px] leading-relaxed text-muted">
-                選んだ地域向けの投稿＋<span className="font-bold text-ink-2">全国向け</span>の投稿が表示されます。
-              </p>
-            </div>
+          {regionFilter.length > 0 && (
+            <button
+              onClick={() => setRegionFilter([])}
+              className="shrink-0 font-ja text-[11px] font-bold text-muted underline underline-offset-2"
+            >
+              クリア
+            </button>
           )}
         </div>
 

@@ -4,7 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
-import { RegionChips } from "@/components/RegionChips";
+import { RegionSelect } from "@/components/RegionSelect";
 
 const PLACEHOLDER = "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK🥒";
 const DURATIONS = ["3時間", "5時間", "1日", "3日"];
@@ -68,7 +68,7 @@ export default function ComposeScreen() {
           <Text style={[styles.helper, { marginTop: 0, marginBottom: 10 }]}>
             選ばない場合は<Text style={{ color: colors.accent, fontWeight: "700" }}>全国向け</Text>として表示されます。
           </Text>
-          <RegionChips value={regions} onChange={setRegions} />
+          <RegionSelect value={regions} onChange={setRegions} placeholder="地域を選択（複数可）" />
         </ScrollView>
 
         <View style={styles.footer}>
