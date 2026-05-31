@@ -3,10 +3,13 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useApp } from "@/lib/store";
 import { BottomNav } from "@/components/BottomNav";
 import { Avatar } from "@/components/Avatar";
 import { PbtBadges } from "@/components/PbtBadge";
+import { RegionSelect } from "@/components/RegionSelect";
+import { regionLabel } from "@/lib/regions";
 import type { Post } from "@/lib/types";
 
 export default function BoardPage() {
@@ -19,10 +22,21 @@ export default function BoardPage() {
     router.push(user ? "/compose" : "/login?next=/compose");
   };
 
+  // 地域フィルタ：未選択＝全件。選択時＝その地域向け＋全国向け（地域未指定）を表示。
+  const [regionFilter, setRegionFilter] = useState<string[]>([]);
+
+  const matchesFilter = (p: Post) => {
+    if (regionFilter.length === 0) return true;
+    const target = p.regions ?? [];
+    if (target.length === 0) return true; // 全国向けは常に表示
+    return target.some((r) => regionFilter.includes(r));
+  };
+  const visible = posts.filter(matchesFilter);
+
   // 表示順：公式 → おすすめ → 通常
-  const official = posts.filter((p) => p.official);
-  const featured = posts.filter((p) => p.featured && !p.official);
-  const normal = posts.filter((p) => !p.featured && !p.official);
+  const official = visible.filter((p) => p.official);
+  const featured = visible.filter((p) => p.featured && !p.official);
+  const normal = visible.filter((p) => !p.featured && !p.official);
 
   const renderCard = (p: Post) => {
     const isOfficial = !!p.official;
@@ -59,12 +73,23 @@ export default function BoardPage() {
         </div>
         {/* 本文：2行で省略してスキャンしやすく */}
         <p className="line-clamp-2 font-ja text-[13px] leading-relaxed text-ink-2">{p.body}</p>
-        {/* メタ：表示時間 */}
-        {p.duration && (
-          <div className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-bg px-2 py-0.5 font-ja text-[10px] text-faint">
-            🕒 {p.duration}表示
-          </div>
-        )}
+        {/* メタ：地域 + 表示時間 */}
+        <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
+          <span
+            className={`inline-flex items-center gap-1 rounded-full px-2 py-0.5 font-ja text-[10px] font-bold ${
+              p.regions && p.regions.length > 0
+                ? "bg-accent/15 text-accent"
+                : "bg-bg text-faint"
+            }`}
+          >
+            📍 {regionLabel(p.regions)}
+          </span>
+          {p.duration && (
+            <span className="inline-flex items-center gap-1 rounded-full bg-bg px-2 py-0.5 font-ja text-[10px] text-faint">
+              🕒 {p.duration}表示
+            </span>
+          )}
+        </div>
       </Link>
     );
   };
@@ -108,6 +133,21 @@ export default function BoardPage() {
       </header>
 
       <main className="no-scrollbar flex flex-1 flex-col gap-3 overflow-y-auto px-5 pb-28 pt-1">
+        {/* 地域フィルタ */}
+        <div className="flex items-center gap-2">
+          <div className="flex-1">
+            <RegionSelect value={regionFilter} onChange={setRegionFilter} placeholder="地域で絞り込み" />
+          </div>
+          {regionFilter.length > 0 && (
+            <button
+              onClick={() => setRegionFilter([])}
+              className="shrink-0 font-ja text-[11px] font-bold text-muted underline underline-offset-2"
+            >
+              クリア
+            </button>
+          )}
+        </div>
+
         {/* 運営からのお知らせ（最新1件をバナー表示） */}
         {latestNews && (
           <Link

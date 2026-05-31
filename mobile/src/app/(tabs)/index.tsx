@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { ScrollView, View, Text, Pressable, StyleSheet, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { Screen } from "@/components/Screen";
 import { Avatar } from "@/components/Avatar";
 import { PbtBadges, AccentTag } from "@/components/Badges";
+import { RegionSelect } from "@/components/RegionSelect";
 import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
+import { regionLabel } from "@/lib/regions";
 import type { Post } from "@/lib/types";
 
 export default function BoardScreen() {
@@ -12,9 +15,20 @@ export default function BoardScreen() {
   const { posts, announcements, unreadNewsCount } = useApp();
   const latestNews = announcements[0];
 
-  const official = posts.filter((p) => p.official);
-  const featured = posts.filter((p) => p.featured && !p.official);
-  const normal = posts.filter((p) => !p.featured && !p.official);
+  // 地域フィルタ：未選択＝全件。選択時＝その地域向け＋全国向け（地域未指定）。
+  const [regionFilter, setRegionFilter] = useState<string[]>([]);
+
+  const matchesFilter = (p: Post) => {
+    if (regionFilter.length === 0) return true;
+    const target = p.regions ?? [];
+    if (target.length === 0) return true;
+    return target.some((r) => regionFilter.includes(r));
+  };
+  const visible = posts.filter(matchesFilter);
+
+  const official = visible.filter((p) => p.official);
+  const featured = visible.filter((p) => p.featured && !p.official);
+  const normal = visible.filter((p) => !p.featured && !p.official);
   const ordered = [...official, ...featured, ...normal];
 
   return (
@@ -35,6 +49,18 @@ export default function BoardScreen() {
           <Text style={{ fontSize: 16 }}>🔔</Text>
           {unreadNewsCount > 0 && <View style={styles.bellDot} />}
         </Pressable>
+      </View>
+
+      {/* 地域フィルタ */}
+      <View style={styles.filterBar}>
+        <View style={{ flex: 1 }}>
+          <RegionSelect value={regionFilter} onChange={setRegionFilter} placeholder="地域で絞り込み" />
+        </View>
+        {regionFilter.length > 0 && (
+          <Pressable onPress={() => setRegionFilter([])}>
+            <Text style={styles.clearTxt}>クリア</Text>
+          </Pressable>
+        )}
       </View>
 
       <ScrollView contentContainerStyle={styles.list} showsVerticalScrollIndicator={false}>
@@ -87,11 +113,18 @@ function PostCard({ post, onPress }: { post: Post; onPress: () => void }) {
       <Text style={styles.body} numberOfLines={2}>
         {post.body}
       </Text>
-      {post.duration && (
-        <View style={styles.durationChip}>
-          <Text style={styles.durationTxt}>🕒 {post.duration}表示</Text>
+      <View style={styles.metaRow}>
+        <View style={[styles.regionChip, post.regions && post.regions.length > 0 ? styles.regionChipOn : null]}>
+          <Text style={[styles.regionTxt, post.regions && post.regions.length > 0 ? { color: colors.accent } : null]}>
+            📍 {regionLabel(post.regions)}
+          </Text>
         </View>
-      )}
+        {post.duration && (
+          <View style={styles.durationChip}>
+            <Text style={styles.durationTxt}>🕒 {post.duration}表示</Text>
+          </View>
+        )}
+      </View>
     </Pressable>
   );
 }
@@ -156,15 +189,19 @@ const styles = StyleSheet.create({
   author: { color: colors.ink, fontSize: 13, fontWeight: "700" },
   time: { marginLeft: "auto", color: colors.faint, fontSize: 10 },
   body: { color: colors.ink2, fontSize: 13, lineHeight: 20 },
+  metaRow: { flexDirection: "row", flexWrap: "wrap", alignItems: "center", gap: 6, marginTop: 10 },
+  regionChip: { backgroundColor: colors.bg, borderRadius: 999, paddingHorizontal: 8, paddingVertical: 3 },
+  regionChipOn: { backgroundColor: "rgba(246,255,84,0.15)" },
+  regionTxt: { color: colors.faint, fontSize: 10, fontWeight: "700" },
   durationChip: {
-    alignSelf: "flex-start",
-    marginTop: 10,
     backgroundColor: colors.bg,
     borderRadius: 999,
     paddingHorizontal: 8,
     paddingVertical: 3,
   },
   durationTxt: { color: colors.faint, fontSize: 10 },
+  filterBar: { flexDirection: "row", alignItems: "center", gap: 10, paddingHorizontal: 20, paddingBottom: 8 },
+  clearTxt: { color: colors.muted, fontSize: 11, fontWeight: "700", textDecorationLine: "underline" },
   fab: {
     position: "absolute",
     right: 20,

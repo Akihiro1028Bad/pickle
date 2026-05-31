@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useApp } from "@/lib/store";
 import { RequireAuth } from "@/components/RequireAuth";
+import { RegionSelect } from "@/components/RegionSelect";
 
 const PLACEHOLDER =
   "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK🥒";
@@ -23,10 +24,11 @@ function Composer() {
   const { addPost } = useApp();
   const [text, setText] = useState("");
   const [duration, setDuration] = useState("1日");
+  const [regions, setRegions] = useState<string[]>([]);
 
   const submit = () => {
     const body = text.trim();
-    if (body) addPost(body, duration);
+    if (body) addPost(body, duration, regions);
     router.push("/");
   };
 
@@ -79,6 +81,14 @@ function Composer() {
         <p className="mt-2 font-ja text-[11px] leading-relaxed text-muted">
           選んだ時間が過ぎると自然に下がっていく目安です（手動の締め切り操作は不要）。
         </p>
+
+        <div className="mt-6 font-ja text-[11px] font-bold uppercase tracking-wider text-muted">
+          発信する地域（任意・複数選択可）
+        </div>
+        <p className="mb-2 mt-1 font-ja text-[11px] leading-relaxed text-muted">
+          選ばない場合は <span className="font-bold text-accent">全国向け</span> として表示されます。
+        </p>
+        <RegionSelect value={regions} onChange={setRegions} placeholder="地域を選択（複数可）" />
       </main>
 
       <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-bg to-transparent px-5 pb-5 pt-4">

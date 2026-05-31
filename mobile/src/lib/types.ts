@@ -14,6 +14,8 @@ export interface Post {
   featured?: boolean;
   /** PBT運営アカウントによる公式投稿（公式バッジ＋強調表示） */
   official?: boolean;
+  /** 発信先の地域（複数可）。未指定は「全国向け」 */
+  regions?: string[];
   /** 表示時間（作成時に選択。プロトタイプは表示のみ） */
   duration?: string;
 }
