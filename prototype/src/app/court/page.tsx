@@ -32,19 +32,6 @@ export default function CourtPage() {
         <p className="mt-3 font-ja text-[11px] leading-relaxed text-muted">
           ※ 空き状況・ご予約は LaBOLA の予約カレンダーをご利用ください。
         </p>
-
-        {/* PBTについて 導線 */}
-        <Link
-          href="/about"
-          className="mt-4 flex items-center gap-3 rounded-lg border border-white/8 bg-surface p-3.5 transition hover:border-accent/40"
-        >
-          <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-court text-base text-accent">ⓘ</span>
-          <div className="min-w-0 flex-1">
-            <div className="font-ja text-[13px] font-bold text-ink">THE PICKLE BANG THEORY とは？</div>
-            <div className="font-ja text-[11px] text-muted">施設・サービス・アクセスを見る</div>
-          </div>
-          <span className="shrink-0 text-muted">›</span>
-        </Link>
       </main>
 
       <div className="absolute inset-x-0 bottom-16 border-t border-white/8 bg-surface px-4 pb-3 pt-3">
@@ -53,6 +40,17 @@ export default function CourtPage() {
           className="block text-center font-ja text-[12px] font-bold text-accent underline underline-offset-4"
         >
           空き時間で募集を投稿する
+        </Link>
+        {/* PBTについて 導線（常時表示） */}
+        <Link
+          href="/about"
+          className="mt-2.5 flex items-center gap-2.5 rounded-lg border border-white/8 bg-bg px-3 py-2 transition hover:border-accent/40"
+        >
+          <span className="grid h-7 w-7 shrink-0 place-items-center rounded-md bg-court text-sm text-accent">ⓘ</span>
+          <span className="min-w-0 flex-1 font-ja text-[12px] font-bold text-ink">
+            THE PICKLE BANG THEORY とは？
+          </span>
+          <span className="shrink-0 text-muted">›</span>
         </Link>
       </div>
 
