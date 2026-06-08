@@ -9,7 +9,11 @@ const PBT_STYLE: Record<PbtBadge, { border: string; bg: string; fg: string }> = 
   契約選手: { border: "rgba(255,106,61,0.4)", bg: "rgba(255,106,61,0.15)", fg: colors.ember },
 };
 
+// PBT認定・契約選手などの資格バッジの表示フラグ。一旦非表示中（true で再表示）。
+const SHOW_PBT_BADGES = false;
+
 export function PbtBadges({ badges }: { badges?: PbtBadge[] }) {
+  if (!SHOW_PBT_BADGES) return null;
   if (!badges || badges.length === 0) return null;
   return (
     <View style={styles.row}>

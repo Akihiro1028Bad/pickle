@@ -14,8 +14,12 @@ interface PbtBadgesProps {
   className?: string;
 }
 
+// PBT認定・契約選手などの資格バッジの表示フラグ。一旦非表示中（true で再表示）。
+const SHOW_PBT_BADGES = false;
+
 /** 投稿者・会員に付与されたPBT公式バッジを表示（"PBT" + ラベル） */
 export function PbtBadges({ badges, size = "sm", className = "" }: PbtBadgesProps) {
+  if (!SHOW_PBT_BADGES) return null;
   if (!badges || badges.length === 0) return null;
   const pad = size === "xs" ? "px-1.5 py-[1px] text-[9px]" : "px-2 py-0.5 text-[10px]";
   return (
