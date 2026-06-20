@@ -1,4 +1,4 @@
-# PBT Match — 実装ロードマップ（プロトタイプ → 本番アプリ）
+# Pickle [仮] — 実装ロードマップ（プロトタイプ → 本番アプリ）
 
 > 作成日: 2026-05-29
 > 前提スタック（`tech-research.md` で確定）: **Expo (React Native) + Supabase + pnpm/Turborepo モノレポ**、iOS先行。
@@ -48,7 +48,7 @@
 
 ### 目標ディレクトリ構成
 ```
-pbt-match/
+pickle/
 ├─ apps/
 │  ├─ web/        # 既存Next.js（当面はLP/プレビュー/規約）
 │  ├─ admin/      # 管理画面（本番化）
@@ -78,7 +78,7 @@ pbt-match/
   - [ ] ドメイン型（`Post` `Thread` `Message` `Profile` `Announcement` など）を集約
   - [ ] **Zodスキーマ**で入力バリデーションを定義（型は `z.infer` で導出）
   - [ ] 純粋ロジック（未読数算出、ソート、公式投稿の並び順 等）を関数化
-  - [ ] 定数（PBTバッジ種別、ロール、ステータスのラベル/トーン）
+  - [ ] 定数（公式/提携バッジ種別、地域、レベル、募集人数、投稿ステータスのラベル/トーン）
 - [ ] `packages/api`：
   - [ ] Supabaseクライアント初期化（**storageアダプタは注入**：Web=localStorage / Native=SecureStore）
   - [ ] リポジトリ関数（`posts.list()` `messages.send()` `profiles.update()` …）
@@ -102,8 +102,9 @@ pbt-match/
 - [ ] Supabase プロジェクト作成（リージョンは東京 `ap-northeast-1`）
 - [ ] テーブル作成（`tech-research.md` §5 のスキーマ）：
   ```sql
-  profiles(id PK=auth.users.id, display_name, handle, avatar_url, skill_level, dupr, home_facility, bio, created_at)
-  posts(id PK, author_id FK->profiles, body, status, official bool, pinned bool, created_at)
+  profiles(id PK=auth.users.id, display_name, handle, avatar_url, skill_level, dupr, home_area, home_facility, bio, created_at)
+  facility_links(id PK, name, prefecture, city, booking_url, partner bool, active bool, sort_order int, created_at)
+  posts(id PK, author_id FK->profiles, prefecture, area_text, place_name, starts_at, ends_at, headcount, level_hint, price_note, body, display_until, status, official bool, pinned bool, created_at)
   threads(id PK, created_at)
   thread_participants(thread_id FK, user_id FK, last_read_at, PK(thread_id,user_id))
   messages(id PK, thread_id FK, sender_id FK, body, read_at, created_at)
@@ -113,7 +114,8 @@ pbt-match/
   ```
 - [ ] **RLS（行レベルセキュリティ）を全テーブル有効化**：
   - profiles=本人のみ更新・閲覧は認証者
-  - posts=閲覧は認証者・編集は著者（公式投稿は運営ロールのみ作成）
+  - posts=閲覧はゲスト可または認証者可（公開方針で決定）・編集は著者（公式投稿は運営ロールのみ作成）
+  - facility_links=公開中のみ閲覧可・編集は管理者のみ
   - threads/messages=参加者のみ（`thread_participants` 存在チェック）
   - push_tokens=本人のみ
 - [ ] マイグレーションをコード管理（`supabase/migrations/`、Supabase CLI）
@@ -131,7 +133,7 @@ pbt-match/
 
 ### タスク
 - [ ] `apps/mobile` を Expo SDK 54+（**New Architecture前提**）で作成
-- [ ] **Expo Router** 導入（タブ：掲示板/コート/メッセージ/プロフィール）
+- [ ] **Expo Router** 導入（タブ：募集/コート/メッセージ/プロフィール）
 - [ ] Supabaseクライアントを `expo-secure-store` をstorageに注入して初期化（`autoRefreshToken` + `AppState`）
 - [ ] 認証実装：
   - [ ] Google = `@react-native-google-signin` → `signInWithIdToken`
@@ -149,14 +151,14 @@ pbt-match/
 
 **目的**: プロトタイプの各画面を、共有ロジックの上にネイティブUIで作り直す。
 
-**実装順（依存の浅い順）**: プロフィール → 掲示板 → コート → DM → ログイン仕上げ → お知らせ/オンボーディング
+**実装順（依存の浅い順）**: プロフィール → 募集 → コート → DM → ログイン仕上げ → お知らせ/オンボーディング
 
 ### タスク
 - [ ] `packages/ui-native`：基本コンポーネント（Card/Badge/Avatar/Button、トークン参照）
   - [ ] ※ **NativeWind v5 は本番非推奨**。当面 RN StyleSheet（または NativeWind v4）で実装
-- [ ] プロフィール（閲覧/編集、PBTバッジ表示）
-- [ ] 掲示板（投稿一覧、公式投稿の強調、おすすめ、投稿作成）
-- [ ] コート空き状況
+- [ ] プロフィール（閲覧/編集、レベル・DUPR・よく行く地域）
+- [ ] 募集（地域/場所/日時/表示時間つき投稿一覧、公式投稿の強調、おすすめ、投稿作成）
+- [ ] コート/施設リンク（予約在庫は持たず外部予約URLへ誘導）
 - [ ] **DM（Realtime）**：
   - [ ] Broadcast from Database で即時反映（`thread:{id}` チャネル、Realtime Authorizationで参加者限定）
   - [ ] 既読（`read_at`）・入力中（ephemeral Broadcast）・オンライン（Presence）
