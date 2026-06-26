@@ -6,7 +6,7 @@ import { useApp } from "@/lib/store";
 import { colors } from "@/lib/theme";
 import { RegionSelect } from "@/components/RegionSelect";
 
-const PLACEHOLDER = "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK🥒";
+const PLACEHOLDER = "今日 19:00〜21:00 / 本八幡のPBT\n中級くらいで1名募集！\n手ぶらOK・料金は現地で割り勘";
 const DURATIONS = ["3時間", "5時間", "1日", "3日"];
 const MAX = 300;
 
@@ -46,7 +46,7 @@ export default function ComposeScreen() {
           />
           <Text style={styles.counter}>{text.length} / {MAX}</Text>
           <Text style={styles.helper}>
-            日時・場所・レベル・人数・料金など、必要なことを<Text style={{ color: colors.accent, fontWeight: "700" }}>自由に</Text>書いてください。
+            料金・持ち物・雰囲気など、選択項目で伝えきれないことを<Text style={{ color: colors.accent, fontWeight: "700" }}>自由に</Text>書いてください。
           </Text>
 
           <Text style={[styles.label, { marginTop: 24 }]}>表示時間</Text>
@@ -64,9 +64,9 @@ export default function ComposeScreen() {
             選んだ時間が過ぎると自然に下がっていく目安です（手動の締め切り操作は不要）。
           </Text>
 
-          <Text style={[styles.label, { marginTop: 24 }]}>発信する地域（任意・複数選択可）</Text>
+          <Text style={[styles.label, { marginTop: 24 }]}>発信する地域（複数選択可）</Text>
           <Text style={[styles.helper, { marginTop: 0, marginBottom: 10 }]}>
-            選ばない場合は<Text style={{ color: colors.accent, fontWeight: "700" }}>全国向け</Text>として表示されます。
+            全国向けにもできますが、相手が見つかりやすいようにプレー予定の地域を選んでください。
           </Text>
           <RegionSelect value={regions} onChange={setRegions} placeholder="地域を選択（複数可）" />
         </ScrollView>

@@ -7,7 +7,7 @@ import { RequireAuth } from "@/components/RequireAuth";
 import { RegionSelect } from "@/components/RegionSelect";
 
 const PLACEHOLDER =
-  "今日 19:00〜21:00 / PBT コート2\n中級ダブルス、あと1名募集！\n¥1,200/人・手ぶらOK🥒";
+  "今日 19:00〜21:00 / 本八幡のPBT\n中級くらいで1名募集！\n手ぶらOK・料金は現地で割り勘";
 
 const DURATIONS = ["3時間", "5時間", "1日", "3日"];
 
@@ -58,7 +58,7 @@ function Composer() {
         />
         <div className="mt-1 text-right font-display text-[11px] text-faint">{text.length} / 300</div>
         <p className="mt-3.5 font-ja text-[11px] leading-relaxed text-muted">
-          日時・場所・レベル・人数・料金など、必要なことを
+          料金・持ち物・雰囲気など、選択項目で伝えきれないことを
           <span className="font-bold text-accent">自由に</span>書いてください。
         </p>
 
@@ -83,10 +83,10 @@ function Composer() {
         </p>
 
         <div className="mt-6 font-ja text-[11px] font-bold uppercase tracking-wider text-muted">
-          発信する地域（任意・複数選択可）
+          発信する地域（複数選択可）
         </div>
         <p className="mb-2 mt-1 font-ja text-[11px] leading-relaxed text-muted">
-          選ばない場合は <span className="font-bold text-accent">全国向け</span> として表示されます。
+          全国向けにもできますが、相手が見つかりやすいようにプレー予定の地域を選んでください。
         </p>
         <RegionSelect value={regions} onChange={setRegions} placeholder="地域を選択（複数可）" />
       </main>
